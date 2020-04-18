@@ -1352,8 +1352,8 @@ function fix158716_niver($atts, $content = null){
 
 
 //--request
-add_action( 'parse_request', 'fix158716_parse_request');
-function fix158716_parse_request( &$wp ) {
+add_action( 'parse_request', 'fix158716_parse_request_2');
+function fix158716_parse_request_2( &$wp ) {
 	if($wp->request == 'pessoas/detalhes/'){
 		// if(current_user_can('subscriber')) {
 			// wp_redirect( home_url().'/vendedor/vendas/listagem' );
@@ -1361,7 +1361,7 @@ function fix158716_parse_request( &$wp ) {
 		// }
 		// wp_redirect( home_url() );
 		get_header();
-		
+
 		get_footer();
 		exit;
 	}
