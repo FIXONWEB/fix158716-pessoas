@@ -1361,7 +1361,13 @@ function fix158716_parse_request_2( &$wp ) {
 		// }
 		// wp_redirect( home_url() );
 		get_header();
-
+		?>
+		<div style="text-align: center;">
+			<h2>Pessoas</h2>
+			<div>Detalhes</div>
+		</div>
+		<?php
+		echo do_shortcode('[fix158716_detalhes]');
 		get_footer();
 		exit;
 	}
