@@ -1354,7 +1354,7 @@ function fix158716_niver($atts, $content = null){
 //--request
 add_action( 'parse_request', 'fix158716_parse_request_2');
 function fix158716_parse_request_2( &$wp ) {
-	if($wp->request == 'pessoas/detalhes/'){
+	if($wp->request == 'pessoas/detalhes'){
 		// if(current_user_can('subscriber')) {
 			// wp_redirect( home_url().'/vendedor/vendas/listagem' );
 			// exit;
