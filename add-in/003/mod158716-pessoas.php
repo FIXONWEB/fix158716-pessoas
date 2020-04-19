@@ -1427,6 +1427,8 @@ function fix158716_niver($atts, $content = null){
 		<div>
 			<?php $rows = fix158716_db($start, $limit) ?>
 			<?php //while($row = $result->fetch_array(MYSQLI_ASSOC)){ ?>
+
+			<?php $path_foto = plugin_dir_url( fix158716__file__() )."img/foto.png"; ?>
 			<?php foreach ($rows as $row) { ?>
 
 				<?php 
@@ -1436,7 +1438,15 @@ function fix158716_niver($atts, $content = null){
 				// if(!$row['first_name']) $row['first_name'] = "N/F";
 
 				$foto = $row['fix158716_foto'];
-				if(!$foto) $foto = 'https://d1587143191.shoppbox.com.br/wp-content/uploads/2020/04/Captura-de-tela-de-2020-04-17-17-09-21.png';
+
+
+				
+
+				// if($row['fix158716_foto']) $path_foto = $row['fix158716_foto'];
+
+
+
+				if(!$foto) $foto = $path_foto;
 				 ?>
 				<div class="fix158716_niver_box">
 					<div><a href="/pessoas/detalhes/?cod=<?=$row['fix158716_codigo'] ?>"><img src="<?=$foto ?>"></a></div>
