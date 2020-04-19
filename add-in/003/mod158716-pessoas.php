@@ -1119,6 +1119,16 @@ function fix158716_detalhes($atts, $content = null){
 add_shortcode("fix158716_detalhes2", "fix158716_detalhes2");
 function fix158716_detalhes2($atts, $content = null){
 	// echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
+	$cod = isset($_GET['cod'])? $_GET['cod'] :'';
+	$sql = "select * from ".$GLOBALS['wpdb']->prefix."fix158716 where fix158716_codigo = $cod";
+	$tb = fix_001940_db_exe($sql,'rows');
+	$row =  $tb['rows'][0];
+	$row['fix158716_nascimento'] = fix_001940_date_mysql_br($row['fix158716_nascimento']);
+	$path_foto = plugin_dir_url( fix158716__file__() )."img/foto.png";
+
+	if($row['fix158716_foto']) $path_foto = $row['fix158716_foto'];
+
+	// echo $path_foto;
 	?>	
 	<style type="text/css">
 	.fix_001940_view_label {
@@ -1134,56 +1144,86 @@ function fix158716_detalhes2($atts, $content = null){
 		font-weight: bolder;
 		margin: 0px;
 	}
+	.fix_001940_view_campo {
+		display: grid;
+		grid-template-columns: 3fr 7fr;
+		border-top:1px solid gray;
+	}
+	.fix_001940_view_body {
+		display: grid;
+		grid-template-columns: 3fr 7fr;
+		/*border:1px solid red;	*/
+	}
+
+	.fix_001940_view_dv_img {
+		background-repeat: no-repeat;
+		background: url(<?=$path_foto ?>);
+		/*background-size: contain;*/
+		background-size: cover;
+		back
+	}
 	</style>
-	<form action="#" method="POST">
-		<div style="border-bottom:1px solid gray;" "=">
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">nome:</div>
-				<div class="fix_001940_view_data">
-					Anderson Benedito Diogo da Rocha
+
+	<div class="fix_001940_view_body">
+		<div class="fix_001940_view_dv_img"  style="">
+
+			<!-- foto - ini -->
+
+			<!-- foto - end -->
+		</div>
+		<div>
+			<!-- dados - ini -->
+			<div style="border-bottom:1px solid gray;">
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">nome:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_nome'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">nascimento:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_nascimento'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">e-mail:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_email'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">telefone:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_telefone'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">ramal:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_ramal'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">setor:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_setor'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">departamento:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_departamento'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">função:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_funcao'] ?></div>
+				</div>
+				<div class="fix_001940_view_campo" >
+					<div class="fix_001940_view_label">rede social:</div>
+					<div class="fix_001940_view_data"><?=$row['fix158716_rede_social'] ?></div>
 				</div>
 			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">nascimento:</div>
-				<div class="fix_001940_view_data">07/04/1987</div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">email:</div>
-				<div class="fix_001940_view_data">aae.teste@d1587165408.shoppbox.com.br</div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">telefone:</div>
-				<div class="fix_001940_view_data">(68) 2858-7749</div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">ramal:</div>
-				<div class="fix_001940_view_data">     102    </div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">setor:</div>
-				<div class="fix_001940_view_data">     Financeiro    </div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">departamento:</div>
-				<div class="fix_001940_view_data">     Financeiro    </div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">funcao:</div>
-				<div class="fix_001940_view_data">     Contador    </div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">rede social:</div>
-				<div class="fix_001940_view_data">     ?    </div>
-			</div>
-			<div style="display: grid;grid-template-columns: 3fr 7fr;border-top:1px solid gray;">
-				<div class="fix_001940_view_label">foto:</div>
-				<div class="fix_001940_view_data"></div>
-			</div>
+			<!-- dados - end -->
+
+
 		</div>
-	</form>
+	</div>
+
+
+
+
 	<?php
 }
 /*
+
 <div class="fixforms-container fixforms-container-full" id="fixforms-55"><form id="fixforms-form-55" class="fixforms-validate fixforms-form" data-formid="55" method="post" enctype="multipart/form-data" action="/" novalidate="novalidate"><noscript class="fixforms-error-noscript">Please enable JavaScript in your browser to complete this form.</noscript><div class="fixforms-field-container"><div id="fixforms-55-field_0-container" class="fixforms-field fixforms-field-name" data-field-id="0"><label class="fixforms-field-label" for="fixforms-55-field_0">Nome <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_0" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][0]" required=""></div><div id="fixforms-55-field_10-container" class="fixforms-field fixforms-field-text" data-field-id="10"><label class="fixforms-field-label" for="fixforms-55-field_10">CPF/CNPJ <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_10" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][10]" required=""></div><div id="fixforms-55-field_13-container" class="fixforms-field fixforms-field-email" data-field-id="13"><label class="fixforms-field-label" for="fixforms-55-field_13">E-mail <span class="fixforms-required-label">*</span></label><input type="email" id="fixforms-55-field_13" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][13]" required=""></div><div id="fixforms-55-field_9-container" class="fixforms-field fixforms-field-text" data-field-id="9"><label class="fixforms-field-label" for="fixforms-55-field_9">Telefone <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_9" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][9]" required=""></div><div id="fixforms-55-field_3-container" class="fixforms-field fixforms-field-text" data-field-id="3"><label class="fixforms-field-label" for="fixforms-55-field_3">Endereço <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_3" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][3]" required=""></div><div id="fixforms-55-field_4-container" class="fixforms-field fixforms-field-text" data-field-id="4"><label class="fixforms-field-label" for="fixforms-55-field_4">Bairro <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_4" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][4]" required=""></div><div id="fixforms-55-field_5-container" class="fixforms-field fixforms-field-text" data-field-id="5"><label class="fixforms-field-label" for="fixforms-55-field_5">Cidade <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_5" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][5]" required=""></div><div id="fixforms-55-field_7-container" class="fixforms-field fixforms-field-text fixforms-one-half fixforms-first" data-field-id="7"><label class="fixforms-field-label" for="fixforms-55-field_7">UF <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_7" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][7]" required=""></div><div id="fixforms-55-field_8-container" class="fixforms-field fixforms-field-text fixforms-one-half" data-field-id="8"><label class="fixforms-field-label" for="fixforms-55-field_8">CEP</label><input type="text" id="fixforms-55-field_8" class="fixforms-field-large" name="fixforms[fields][8]"></div><div id="fixforms-55-field_11-container" class="fixforms-field fixforms-field-select fixforms-one-half fixforms-first" data-field-id="11"><label class="fixforms-field-label" for="fixforms-55-field_11">Opções <span class="fixforms-required-label">*</span></label><select id="fixforms-55-field_11" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][11]" required="required"><option value="1 UNIDADE">1 UNIDADE</option><option value="2 UNIDADES">2 UNIDADES</option><option value="3 UNIDADES">3 UNIDADES</option><option value="4 UNIDADES">4 UNIDADES</option></select></div><div id="fixforms-55-field_12-container" class="fixforms-field fixforms-field-text fixforms-one-half" data-field-id="12"><label class="fixforms-field-label" for="fixforms-55-field_12">Valor da compra</label><input type="text" id="fixforms-55-field_12" class="fixforms-field-large" name="fixforms[fields][12]"></div><div id="fixforms-55-field_16-container" class="fixforms-field fixforms-field-radio fixforms-list-2-columns" data-field-id="16"><label class="fixforms-field-label" for="fixforms-55-field_16">Prefere pagar com <span class="fixforms-required-label">*</span></label><ul id="fixforms-55-field_16" class="fixforms-field-required"><li class="choice-1 depth-1"><input type="radio" id="fixforms-55-field_16_1" name="fixforms[fields][16]" value="Boleto Bancário" required=""><label class="fixforms-field-label-inline" for="fixforms-55-field_16_1">Boleto Bancário</label></li><li class="choice-2 depth-1"><input type="radio" id="fixforms-55-field_16_2" name="fixforms[fields][16]" value="Cartão de Crédito" required=""><label class="fixforms-field-label-inline" for="fixforms-55-field_16_2">Cartão de Crédito</label></li></ul></div><div id="fixforms-55-field_2-container" class="fixforms-field fixforms-field-textarea" data-field-id="2"><label class="fixforms-field-label" for="fixforms-55-field_2">Comentário ou Mensagem <span class="fixforms-required-label">*</span></label><textarea id="fixforms-55-field_2" class="fixforms-field-medium fixforms-field-required" name="fixforms[fields][2]" required=""></textarea></div></div><div class="fixforms-field fixforms-field-hp"><label for="fixforms-55-field-hp" class="fixforms-field-label">Email</label><input type="text" name="fixforms[hp]" id="fixforms-55-field-hp" class="fixforms-field-medium"></div><div class="fixforms-submit-container"><input type="hidden" name="fixforms[id]" value="55"><input type="hidden" name="fixforms[author]" value="1"><input type="hidden" name="fixforms[post_id]" value="5"><button type="submit" name="fixforms[submit]" class="fixforms-submit " id="fixforms-submit-55" value="fixforms-submit" aria-live="assertive" data-alt-text="Enviando..." data-submit-text="COMPRAR">COMPRAR</button></div></form></div>
 */
 //add_action('wp_head', 'fix158716_wp_head');
@@ -1436,7 +1476,7 @@ function fix158716_parse_request_2( &$wp ) {
 			<div>Detalhes</div>
 		</div>
 		<?php
-		echo do_shortcode('[fix158716_detalhes]');
+		echo do_shortcode('[fix158716_detalhes2]');
 
 		get_footer();
 		exit;
