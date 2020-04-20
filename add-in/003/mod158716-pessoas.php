@@ -1499,8 +1499,11 @@ function fix158716_niver($atts, $content = null){
 add_action( 'parse_request', 'fix158716_parse_request_2');
 function fix158716_parse_request_2( &$wp ) {
 	
-	if($wp->request == 'fix158716_exportar_tabela_x'){
+	if($wp->request == 'fix158716_exportar_tabela_y'){
+
+
 		fix158716_export_csv();
+		// echo '---';
 		exit;
 	}
 	if($wp->request == 'fix158716_exportar_tabela'){
@@ -2011,7 +2014,7 @@ function fix158716_mnut_by_admin($atts, $content = null){
 	<div><a id="fix158716_mnut_btn_limpar_tabela" href="#">LIMPAR TABELA</a></div>
 	<div><a id="fix158716_mnut_btn_importar_tabela" href="#">IMPORTAR TABELA</a></div>
 	<div><a id="fix158716_mnut_btn_exportar_tabela" href="#">EXPORTAR TABELA</a></div>
-	<div><a id="fix158716_mnut_btn__exportar_tabela" href="<?php echo site_url() ?>/fix158716_exportar_tabela_x">EXPORTAR TABELA</a></div>
+	<div><a id="fix158716_mnut_btn__exportar_tabela" href="<?php echo site_url() ?>/fix158716_exportar_tabela_y">-----EXPORTAR TABELA</a></div>
 	<?php
 	return ob_get_clean();
 }
@@ -2021,7 +2024,31 @@ function fix158716_view_by_admin($atts, $content = null){
 	
 }
 
+function fix158716_get_cols(){
+	$sql = "SHOW COLUMNS FROM ".$GLOBALS['wpdb']->prefix.'fix158716';
+	$tb = fix_001940_db_exe($sql,'rows');
+	// print('<pre>');
+	// print_r($tb['rows']);
+	// print('</pre>');
+	$cols = '';
+	$i = 0;
+	foreach ($tb['rows'] as $row) {
+		// print('<pre>');
+		// print_r($row['Field']);
+		// print('</pre>');
+		if($i) $cols .= ', ';
+		$cols .= $row['Field'];
+		$i++;
+	}
+	return $cols;
+}
+
 function fix158716_export_csv(){
+
+
+		// echo $cols;
+		// return '';
+
 	// if(isset($_POST["export"])) {  
 
 		/*
@@ -2034,7 +2061,9 @@ function fix158716_export_csv(){
 		header('Content-Disposition: attachment; filename=fix158716.csv');  
 		$output = fopen("php://output", "w");  
 		fputcsv($output, array('fix158716_codigo', 'fix158716_nome', 'fix158716_nascimento' ));  
-		$query = "SELECT fix158716_codigo, fix158716_nome, fix158716_nascimento from ".$GLOBALS['wpdb']->prefix."fix158716 ORDER BY fix158716_codigo ASC";  
+		// $query = "SELECT fix158716_codigo, fix158716_nome, fix158716_nascimento from ".$GLOBALS['wpdb']->prefix."fix158716 ORDER BY fix158716_codigo ASC";  
+		$cols = fix158716_get_cols();
+		$query = "SELECT ".$cols." from ".$GLOBALS['wpdb']->prefix."fix158716 ORDER BY fix158716_codigo ASC";  
 		$result = mysqli_query($connect, $query);  
 		while($row = mysqli_fetch_assoc($result)) {  
 			fputcsv($output, $row);  
@@ -2044,6 +2073,10 @@ function fix158716_export_csv(){
 }
 
 function fix158716_import_csv(){
+
+
+
+
 	?>
 	<form id="sample_form" method="POST" enctype="multipart/form-data" class="form-horizontal">
 		<div class="form-group">
@@ -2089,6 +2122,18 @@ function fix158716_import_csv(){
 function fix158716_file_import_csv(){
 	ini_set("display_errors", 1);
 	error_reporting(E_ALL|E_STRICT);
+
+
+	// $sql = "SHOW COLUMNS FROM ".$GLOBALS['wpdb']->prefix.'fix158716';
+	// $tb = fix_001940_db_exe($sql,'rows');
+	// print('<pre>');
+	// print_r($tb['rows']);
+	// print('</pre>');
+
+	// return '';
+
+
+
 	print_r($_FILES);
 
 	if(!empty($_FILES['file']['name'])){
@@ -2123,6 +2168,10 @@ function fix158716_file_import_csv(){
 	    (fix158716_codigo,fix158716_nome);
 	    ";
 
+
+
+
+	    $cols = fix158716_get_cols();
 		$sql = "
 			LOAD DATA local INFILE '".$file_location."' 
 			INTO TABLE ".$GLOBALS['wpdb']->prefix."fix158716 
@@ -2133,6 +2182,20 @@ function fix158716_file_import_csv(){
 			(fix158716_codigo, fix158716_nome, fix158716_nascimento)
 		;
 		";
+
+
+	    $cols = fix158716_get_cols();
+		$sql = "
+			LOAD DATA local INFILE '".$file_location."' 
+			INTO TABLE ".$GLOBALS['wpdb']->prefix."fix158716 
+			CHARACTER SET 'utf8' 
+			FIELDS TERMINATED BY ',' 
+			ENCLOSED BY '\"' 
+			IGNORE 1 LINES 
+			(".$cols.")
+		;
+		";
+
 
 		echo $sql;
 

@@ -7,7 +7,7 @@
  * Author URI:      https://github.com/fixonweb
  * Text Domain:     fix158716-pessoas
  * Domain Path:     /languages
- * Version:         0.1.10
+ * Version:         0.1.11
  *
  * @package         Fix158716_Pessoas
  */
