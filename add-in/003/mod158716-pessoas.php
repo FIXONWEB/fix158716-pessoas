@@ -2123,7 +2123,7 @@ function fix158716_file_import_csv(){
 	ini_set("mysqli.allow_local_infile", "On");
 	ini_set("display_errors", 1);
 	error_reporting(E_ALL|E_STRICT);
-	
+	//mysqli.allow_local_infile = On
 	 
 
 
