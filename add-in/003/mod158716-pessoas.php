@@ -22,6 +22,18 @@ if(!$fix158716_version) {
 	$fix158716_version = $fix158716_new_version;
 	update_option('fix158716_version', $fix158716_version);
 }
+if($fix158716_version=="1.0.0") {
+	// die('-------');
+	global $wpdb;
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	$sql = "ALTER TABLE ".$wpdb->prefix."fix158716 CHANGE fix158716_foto fix158716_foto VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;";
+	// $wpdb->query($sql);
+	dbDelta( $sql );
+	$fix158716_new_version = "1.0.1";
+	update_option('fix158716_version', $fix158716_new_version);	
+	error_log("fix158716_new_version = 1.0.1", 0);
+}
+
 
 function fix158716__plugin_file(){
 	return __FILE__;	
@@ -77,7 +89,7 @@ function fix158716_create_table() {
 		fix158716_departamento varchar(60),
 		fix158716_funcao varchar(60),
 		fix158716_rede_social varchar(60),
-		fix158716_foto varchar(60),
+		fix158716_foto varchar(200),
 
 		PRIMARY KEY (`fix158716_codigo`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
@@ -183,7 +195,22 @@ function fix158716_delete_table() {
 add_action( 'parse_request', 'fix158716_parse_request');
 function fix158716_parse_request( &$wp ) {
 	
-	// if($wp->request == 'fix158716/register'){
+
+	if($wp->request == 'fix158716_busca_ajax'){
+		$query = isset($_POST['query']) ? $_POST['query'] : '';
+		$sql = "SELECT * FROM wp_fix158716 WHERE fix158716_nome LIKE '%".$query."%'";
+		$tb = fix_001940_db_exe($sql,'rows');
+		$rows = $tb['rows'];
+		foreach ($rows as $row) {
+			?>
+  				<li class="list-group-item contsearch">
+   					<a href="<?php echo site_url() ?>/pessoas/detalhes/?cod=<?php echo $row['fix158716_codigo'] ?>" class="gsearch" style="color:#333;text-decoration:none;"><?php echo $row['fix158716_nome'] ?></a>
+  				</li>
+			<?php
+		}
+		exit;
+	}
+	
 	if($wp->request == 'register-time-and-ip'){
 		// 		fix158716_origem varchar(60),
 		// fix158716_time int,
@@ -883,6 +910,116 @@ function fix158716_list($atts, $content = null){
 }
 
 
+add_shortcode("fix158716_list_no_restrict", "fix158716_list_no_restrict");
+function fix158716_list_no_restrict($atts, $content = null){
+	$vai = 0;
+	// if(current_user_can('administrator')) $vai = 1;
+	// if(current_user_can('fix-administrativo')) $vai = 1;
+	// if(!$vai) {	return '<!--não disponivel-->';}
+	ob_start();
+	?>
+	<div id="fix158716_list_dv" class="fix158716_list_dv">
+		<style type="text/css">
+			#fix158716_mnum_mask {
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.5);
+				z-index: 9990;
+			}
+			#fix158716_mnum_dv {
+				position: absolute;
+				left: 0px;
+				margin-left: 0px;
+				top: 0px;
+				background-color: white;
+				width: 200px;
+				min-height: 30px;
+				border: 1px solid gray;
+				z-index: 9991;
+
+				-moz-border-radius: 10px;
+				-webkit-border-radius: 10px;
+				border-radius: 10px;
+				padding: 5px 10px;
+
+				-moz-box-shadow: 5px 5px 10px gra;
+				-webkit-box-shadow: 5px 5px 10px black;
+				box-shadow: 5px 5px 10px black;
+
+			}
+			.clicado_ {
+				background-color: silver;
+			}
+			.fix158716_list_ tr td {
+				border:1px solid black;
+			} 
+		</style>
+		<script type="text/javascript">
+			var mousex = 0;
+			var mousey = 0;
+			jQuery("html").mousemove(function(mouse){
+				mousex = mouse.pageX;
+				mousey = mouse.pageY;
+			});
+
+			jQuery(function($){
+				$('.fix158716_mnut').on('click',function(e){
+					$('body').append('<div id="fix158716_mnum_mask"></div>');
+					$('body').append('<div id="fix158716_mnum_dv">abrindo...</div>');
+					$('#fix158716_mnum_dv').load('<?php echo site_url() ?>/fix158716_mnut/');
+					$('#fix158716_mnum_mask').on('click',function(e){
+						$('#fix158716_mnum_mask').remove();
+						$('#fix158716_mnum_dv').remove();
+					});
+					$('#fix158716_mnum_dv').css('left',mousex+'px');
+					$('#fix158716_mnum_dv').css('top',mousey+'px');
+				});
+				$('.fix158716_mnum').on('click',function(e){
+					var cod = $(this).parent().attr('data-codigo');
+					console.log('fix158716_mnum: '+cod);
+					$('body').append('<div id="fix158716_mnum_mask"></div>');
+					$('body').append('<div id="fix158716_mnum_dv">abrindo...</div>');
+					$('#fix158716_mnum_dv').load('<?php echo site_url() ?>/fix158716_mnum/?cod='+cod);
+					$('#fix158716_mnum_mask').on('click',function(e){
+						$('#fix158716_mnum_mask').remove();
+						$('#fix158716_mnum_dv').remove();
+					});
+
+					$('#fix158716_mnum_dv').css('left',mousex+'px');
+					$('#fix158716_mnum_dv').css('top',mousey+'px');
+
+				});
+				$('.fix158716_list tr').on('click',function(){
+					$( this ).toggleClass( "clicado" );
+				});
+			});
+		</script>
+
+
+			<?php
+			echo do_shortcode('[fix_001940_list 
+				md=fix158716 
+				col__x0="..." 
+				col__xt="..." 
+				un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_rede_social fix158716_foto " 
+				col_url="fix158716_nome,<a href=detalhes/?cod=__fix158716_codigo__>__this__</a>"
+			]');
+			?>
+
+		</div>
+
+
+
+
+		
+	<?php
+	
+	return ob_get_clean();
+}
+
 
 add_shortcode("fix158716_paged", "fix158716_paged");
 function fix158716_paged($atts, $content = null){
@@ -1057,7 +1194,65 @@ function fix158716_paged($atts, $content = null){
 
 add_shortcode("fix158716_buscar", "fix158716_buscar");
 function fix158716_buscar($atts, $content = null){
-	echo do_shortcode( '[fix_001940_busca]');
+	// echo do_shortcode( '[fix_001940_busca]');
+	$busca = isset($_GET['busca']) ? $_GET['busca'] : '';
+	ob_start();
+	?>
+	<style type="text/css">
+		.fix158716_buscar_submit {
+		    border-style: solid;
+		    border-top-width: 0;
+		    border-right-width: 0;
+		    border-left-width: 0;
+		    border-bottom-width: 0;
+		    color: #ffffff;
+		    border-color: #0274be;
+		    background-color: #0274be;
+		    border-radius: 2px;
+		    padding-top: 10px;
+		    padding-right: 10px!important;
+		    padding-bottom: 10px;
+		    padding-left: 10px!important;
+		    font-family: inherit;
+		    font-weight: inherit;
+		    line-height: 1;
+		    width: 20%;
+		}
+	</style>
+	<script type="text/javascript">
+		jQuery(function($){
+			$('#fix158716_busca').keyup(function(){
+				var query = $('#fix158716_busca').val();
+				$('#fix158716_detail').html('');
+				if(query.length >= 2){
+
+					$('#fix158716_detail').html(query);
+					$.ajax({
+						url:"<?php echo site_url() ?>/fix158716_busca_ajax",
+						method:"POST",
+						data:{query:query},
+						success:function(data){
+							$('.list-group').html(data);
+							$('.list-group').css('display', 'block');
+						}
+					});
+				}
+				if(query.length == 0){
+					$('#fix158716_detail').html();
+					$('.list-group').css('display', 'none');
+				}
+			});
+		});
+	</script>
+	<form action="<?php echo site_url() ?>/funcionarios/" method="GET" class="fix158716_buscar" style="">
+		<input type="search" value="<?=$busca ?>" name="busca" id="fix158716_busca" style="width:70%;border:1px solid black;" placeholder="BUSCA" autocomplete="off">
+		<input class="fix158716_buscar_submit" type="submit" value="OK" style="">
+		<div id="fix158716_detail"></div>
+		<ul class="list-group"></ul>
+	</form>
+	
+	<?php
+	return ob_get_clean();
 }
 
 add_shortcode("fix158716_nnew", "fix158716_nnew");
@@ -1137,6 +1332,11 @@ function fix158716_detalhes($atts, $content = null){
 	
 }
 
+add_shortcode("fix158716_detalhes_no_restrict", "fix158716_detalhes_no_restrict");
+function fix158716_detalhes_no_restrict($atts, $content = null){
+	// echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
+	
+}
 
 add_shortcode("fix158716_detalhes2", "fix158716_detalhes2");
 function fix158716_detalhes2($atts, $content = null){
@@ -1499,6 +1699,41 @@ function fix158716_niver($atts, $content = null){
 add_action( 'parse_request', 'fix158716_parse_request_2');
 function fix158716_parse_request_2( &$wp ) {
 	
+	if($wp->request == 'fix158716_upload_foto'){
+		global $wpdb;
+		// ini_set("mysqli.allow_local_infile", "On");
+		ini_set("display_errors", 1);
+		error_reporting(E_ALL|E_STRICT);
+		//mysqli.allow_local_infile = On
+
+		print_r($_FILES);
+		print_r($_POST);
+
+		if(!empty($_FILES['file']['name'])){
+			$file_location = $_FILES['file']['tmp_name'];
+			
+			// $uploaddir = '/var/www/uploads/';
+			$cod = isset($_POST['cod']) ? $_POST['cod'] : '';
+			$uploaddir = plugin_dir_path( fix158716__file__() )."fotos/foto-".$cod."-".time().".png";
+			$uploaddir_path = plugin_dir_url( fix158716__file__() )."fotos/foto-".$cod."-".time().".png";
+			echo $uploaddir;
+
+			if (move_uploaded_file($file_location , $uploaddir)) {
+    			echo "Arquivo válido e enviado com sucesso.\n";
+    			$sql = "update ".$GLOBALS['wpdb']->prefix."fix158716 set fix158716_foto = '".$uploaddir_path."' where fix158716_codigo=".$cod.";";
+    			$wpdb->query( $sql );
+			} else {
+    			echo "Fail!\n";
+			}
+
+
+			// plugin_dir_url( fix158716__file__() )."img/foto.png";
+			
+
+			// $wpdb->query( $sql );
+		}
+		exit;
+	}
 	if($wp->request == 'fix158716_exportar_tabela_y'){
 
 
@@ -2018,8 +2253,26 @@ function fix158716_mnut_by_admin($atts, $content = null){
 	<?php
 	return ob_get_clean();
 }
+
+add_shortcode("fix158716_view_foto_by_admin", "fix158716_view_foto_by_admin");
+function fix158716_view_foto_by_admin($atts, $content = null){
+	ob_start();
+	$cod = isset($_GET['cod']) ? $_GET['cod'] : '';
+	$sql = "select fix158716_foto from ".$GLOBALS['wpdb']->prefix."fix158716 where fix158716_codigo = ".$cod.";";
+	$tb = fix_001940_db_exe($sql,'rows');
+	$foto = $tb['rows'][0]['fix158716_foto'];
+	// echo "-- $foto --";
+	?>
+	<div style="width: 100%; height:300px; background: url(<?=$foto ?>);background-size: contain;background-repeat: no-repeat;"></div>
+	<?php
+	return ob_get_clean();
+}
+
 add_shortcode("fix158716_view_by_admin", "fix158716_view_by_admin");
 function fix158716_view_by_admin($atts, $content = null){
+	
+	echo do_shortcode('[fix158716_view_foto_by_admin]');
+	echo do_shortcode('[fix158716_form_upload_foto]');
 	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
 	
 }
@@ -2072,6 +2325,50 @@ function fix158716_export_csv(){
 	// }
 }
 
+// add_shortcode("fix158716_view_by_admin", "fix158716_view_by_admin");
+// function fix158716_view_by_admin($atts, $content = null){
+// 	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
+	
+// }
+add_shortcode("fix158716_form_upload_foto", "fix158716_form_upload_foto");
+function fix158716_form_upload_foto($atts, $content = null){
+	ob_start();
+	?>
+	<script>
+		jQuery(document).ready(function($){
+			$('#fix158716_form_upload_foto').on('submit', function(event){
+				$('#fix158716_form_upload_foto_msg').html('');
+				event.preventDefault();
+				$.ajax({
+					url:"<?php echo site_url() ?>/fix158716_upload_foto",
+					method:"POST",
+					data: new FormData(this),
+					dataType:"json",
+					contentType:false,
+					cache:false,
+					processData:false,
+					success:function(data){
+						$('#fix158716_form_upload_foto').html('<div class="alert alert-success">'+data.success+'</div>');
+						$('#fix158716_form_upload_foto')[0].reset();
+					}
+				})
+			});
+		});
+	</script>
+	<form id="fix158716_form_upload_foto" method="POST" enctype="multipart/form-data" class="">
+		<div class="">
+			<label class="">FOTO:</label>
+			<input type="file" name="file" id="file" accept=".png" />
+			<input type="hidden" name="hidden_field" value="1" />
+			<input type="hidden" name="cod" value="<?php echo isset($_GET['cod']) ? $_GET['cod'] : '' ?>" />
+			<input type="submit" name="import" id="import" class="" value="Ok" />
+		</div>
+		<div class="fix158716_form_upload_foto_msg"></div>
+	</form>
+
+	<?php
+	return ob_get_clean();
+}
 function fix158716_import_csv(){
 
 
