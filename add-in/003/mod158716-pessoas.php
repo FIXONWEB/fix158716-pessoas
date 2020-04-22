@@ -300,20 +300,8 @@ function fix158716_parse_request( &$wp ) {
 		exit;
 	}
 
-	if($wp->request == 'fix158716_view_by_admin'){
-		echo do_shortcode('[fix158716_view_by_admin]') ;
-		exit;
-	}
 
 
-	if($wp->request == 'fix158716_mnut_by_admin'){
-		$vai = 0;
-		if(current_user_can('administrator')) $vai = 1;
-		if(current_user_can('fix-administrativo')) $vai = 1;
-		if(!$vai) {	echo '<!--não disponivel-->';exit;}
-		echo do_shortcode('[fix158716_mnut_by_admin]');
-		exit;
-	}
 
 
 	if($wp->request == 'fix158716_list'){
@@ -382,14 +370,6 @@ function fix158716_parse_request( &$wp ) {
 		if(current_user_can('fix-administrativo')) $vai = 1;
 		if(!$vai) {	return '<!--não disponivel-->';}
 		echo do_shortcode('[fix158716_mnum]');
-		exit;
-	}
-	if($wp->request == 'fix158716_mnum_by_admin'){
-		$vai = 0;
-		if(current_user_can('administrator')) $vai = 1;
-		// if(current_user_can('fix-administrativo')) $vai = 1;
-		if(!$vai) {	return '<!--não disponivel-->';}
-		echo do_shortcode('[fix158716_mnum_by_admin]');
 		exit;
 	}
 	
@@ -1444,10 +1424,7 @@ function fix158716_detalhes2($atts, $content = null){
 
 	<?php
 }
-/*
 
-<div class="fixforms-container fixforms-container-full" id="fixforms-55"><form id="fixforms-form-55" class="fixforms-validate fixforms-form" data-formid="55" method="post" enctype="multipart/form-data" action="/" novalidate="novalidate"><noscript class="fixforms-error-noscript">Please enable JavaScript in your browser to complete this form.</noscript><div class="fixforms-field-container"><div id="fixforms-55-field_0-container" class="fixforms-field fixforms-field-name" data-field-id="0"><label class="fixforms-field-label" for="fixforms-55-field_0">Nome <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_0" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][0]" required=""></div><div id="fixforms-55-field_10-container" class="fixforms-field fixforms-field-text" data-field-id="10"><label class="fixforms-field-label" for="fixforms-55-field_10">CPF/CNPJ <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_10" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][10]" required=""></div><div id="fixforms-55-field_13-container" class="fixforms-field fixforms-field-email" data-field-id="13"><label class="fixforms-field-label" for="fixforms-55-field_13">E-mail <span class="fixforms-required-label">*</span></label><input type="email" id="fixforms-55-field_13" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][13]" required=""></div><div id="fixforms-55-field_9-container" class="fixforms-field fixforms-field-text" data-field-id="9"><label class="fixforms-field-label" for="fixforms-55-field_9">Telefone <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_9" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][9]" required=""></div><div id="fixforms-55-field_3-container" class="fixforms-field fixforms-field-text" data-field-id="3"><label class="fixforms-field-label" for="fixforms-55-field_3">Endereço <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_3" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][3]" required=""></div><div id="fixforms-55-field_4-container" class="fixforms-field fixforms-field-text" data-field-id="4"><label class="fixforms-field-label" for="fixforms-55-field_4">Bairro <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_4" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][4]" required=""></div><div id="fixforms-55-field_5-container" class="fixforms-field fixforms-field-text" data-field-id="5"><label class="fixforms-field-label" for="fixforms-55-field_5">Cidade <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_5" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][5]" required=""></div><div id="fixforms-55-field_7-container" class="fixforms-field fixforms-field-text fixforms-one-half fixforms-first" data-field-id="7"><label class="fixforms-field-label" for="fixforms-55-field_7">UF <span class="fixforms-required-label">*</span></label><input type="text" id="fixforms-55-field_7" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][7]" required=""></div><div id="fixforms-55-field_8-container" class="fixforms-field fixforms-field-text fixforms-one-half" data-field-id="8"><label class="fixforms-field-label" for="fixforms-55-field_8">CEP</label><input type="text" id="fixforms-55-field_8" class="fixforms-field-large" name="fixforms[fields][8]"></div><div id="fixforms-55-field_11-container" class="fixforms-field fixforms-field-select fixforms-one-half fixforms-first" data-field-id="11"><label class="fixforms-field-label" for="fixforms-55-field_11">Opções <span class="fixforms-required-label">*</span></label><select id="fixforms-55-field_11" class="fixforms-field-large fixforms-field-required" name="fixforms[fields][11]" required="required"><option value="1 UNIDADE">1 UNIDADE</option><option value="2 UNIDADES">2 UNIDADES</option><option value="3 UNIDADES">3 UNIDADES</option><option value="4 UNIDADES">4 UNIDADES</option></select></div><div id="fixforms-55-field_12-container" class="fixforms-field fixforms-field-text fixforms-one-half" data-field-id="12"><label class="fixforms-field-label" for="fixforms-55-field_12">Valor da compra</label><input type="text" id="fixforms-55-field_12" class="fixforms-field-large" name="fixforms[fields][12]"></div><div id="fixforms-55-field_16-container" class="fixforms-field fixforms-field-radio fixforms-list-2-columns" data-field-id="16"><label class="fixforms-field-label" for="fixforms-55-field_16">Prefere pagar com <span class="fixforms-required-label">*</span></label><ul id="fixforms-55-field_16" class="fixforms-field-required"><li class="choice-1 depth-1"><input type="radio" id="fixforms-55-field_16_1" name="fixforms[fields][16]" value="Boleto Bancário" required=""><label class="fixforms-field-label-inline" for="fixforms-55-field_16_1">Boleto Bancário</label></li><li class="choice-2 depth-1"><input type="radio" id="fixforms-55-field_16_2" name="fixforms[fields][16]" value="Cartão de Crédito" required=""><label class="fixforms-field-label-inline" for="fixforms-55-field_16_2">Cartão de Crédito</label></li></ul></div><div id="fixforms-55-field_2-container" class="fixforms-field fixforms-field-textarea" data-field-id="2"><label class="fixforms-field-label" for="fixforms-55-field_2">Comentário ou Mensagem <span class="fixforms-required-label">*</span></label><textarea id="fixforms-55-field_2" class="fixforms-field-medium fixforms-field-required" name="fixforms[fields][2]" required=""></textarea></div></div><div class="fixforms-field fixforms-field-hp"><label for="fixforms-55-field-hp" class="fixforms-field-label">Email</label><input type="text" name="fixforms[hp]" id="fixforms-55-field-hp" class="fixforms-field-medium"></div><div class="fixforms-submit-container"><input type="hidden" name="fixforms[id]" value="55"><input type="hidden" name="fixforms[author]" value="1"><input type="hidden" name="fixforms[post_id]" value="5"><button type="submit" name="fixforms[submit]" class="fixforms-submit " id="fixforms-submit-55" value="fixforms-submit" aria-live="assertive" data-alt-text="Enviando..." data-submit-text="COMPRAR">COMPRAR</button></div></form></div>
-*/
 //add_action('wp_head', 'fix158716_wp_head');
 function fix158716_wp_head(){
 	?>
@@ -1533,17 +1510,6 @@ function fix158716_wp_head(){
 	<?php
 }
 
-
-
-
-
-
-
-
-
-
-
-
 function fix158716_db($start=0,$limit=4){
 
 	global $wpdb;
@@ -1597,20 +1563,10 @@ function fix158716_db($start=0,$limit=4){
 		MONTH(m8.meta_value) = '3'
 	limit ".$start.",".$limit."
 	";
-	// echo $sql;
-	/*
-SELECT NomeCompleto, Telefone FROM tblcliente WHERE YEAR(DataNascimento) = '2017'
-	*/
-
 	$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 	$result = mysqli_query($mysqli, $sql);
 	return 	$result;
 }
-
-
-
-
-
 
 
 add_shortcode("fix158716_niver", "fix158716_niver");
@@ -1619,11 +1575,6 @@ function fix158716_niver($atts, $content = null){
 		"start" => '0',
 		"limit" => '4'
 	), $atts));
-
-
-
-
-
 	ob_start();
 	?>
 	<style type="text/css">
@@ -1645,19 +1596,11 @@ function fix158716_niver($atts, $content = null){
 		.fix158716_niver_box .c2r1, .fix158716_niver_box .c2r2 {padding-left: 4px;}
 	</style>
 	<div class="fix158716_niver_cols">
-		
-
-
-
 		<div>
 			<?php $rows = fix158716_db($start, $limit) ?>
-			<?php //while($row = $result->fetch_array(MYSQLI_ASSOC)){ ?>
-
 			<?php $path_foto = plugin_dir_url( fix158716__file__() )."img/foto.png"; ?>
 			<?php foreach ($rows as $row) { ?>
-
 				<?php 
-				// if(!$row['nascimento']) $row['nascimento'] = "N/F";
 				$niver = substr($row['fix158716_nascimento'], 8,2)."/".substr($row['fix158716_nascimento'], 5,2);
 				$nome = $row['fix158716_nome'];
 				$foto = $row['fix158716_foto'];
@@ -1674,14 +1617,8 @@ function fix158716_niver($atts, $content = null){
 			<?php } ?>
 
 		</div>
-
-
-
-
-
 	</div>
 	<?php
-
 	return ob_get_clean();
 }
 
@@ -1695,46 +1632,22 @@ function fix158716_parse_request_2( &$wp ) {
 		// ini_set("mysqli.allow_local_infile", "On");
 		ini_set("display_errors", 1);
 		error_reporting(E_ALL|E_STRICT);
-		//mysqli.allow_local_infile = On
-
-		print_r($_FILES);
-		print_r($_POST);
-
 		$cod = isset($_POST['cod']) ? $_POST['cod'] : '';
-
-
-
-
-
 		$wordpress_upload_dir = wp_upload_dir();
-		// $wordpress_upload_dir['path'] is the full server path to wp-content/uploads/2017/05, for multisite works good as well
-		// $wordpress_upload_dir['url'] the absolute URL to the same folder, actually we do not need it, just to show the link to file
 		$i = 1; // number of tries when the file with the same name is already exists
-
 		$profilepicture = $_FILES['profilepicture'];
-
-		// $profilepicture['name'] = preg_replace('/\.[^.]+$/', '', $profilepicture['name']);
 		$profilepicture['name'] = preg_replace('/ /', '-', $profilepicture['name']);
-
-
 		$new_file_path = $wordpress_upload_dir['path'] . '/' . $profilepicture['name'];
-		// $new_file_path = $wordpress_upload_dir['path'] . '/' . 'foto-'.$cod;
 		$new_file_mime = mime_content_type( $profilepicture['tmp_name'] );
-
 		if( empty( $profilepicture ) ) die( 'File is not selected.' );
 		if( $profilepicture['error'] ) die( $profilepicture['error'] );
 		if( $profilepicture['size'] > wp_max_upload_size() ) die( 'It is too large than expected.' );
 		if( !in_array( $new_file_mime, get_allowed_mime_types() ) ) die( 'WordPress doesn\'t allow this type of uploads.' );
-
 		while( file_exists( $new_file_path ) ) {
 			$i++;
 			$new_file_path = $wordpress_upload_dir['path'] . '/' . $i . '_' . $profilepicture['name'];
 		}
-
 		echo '<pre>'.$new_file_path.'</pre>';
-
-
-		// looks like everything is OK
 		if( move_uploaded_file( $profilepicture['tmp_name'], $new_file_path ) ) {
 			$upload_id = wp_insert_attachment( array(
 				'guid'           => $new_file_path, 
@@ -1745,57 +1658,20 @@ function fix158716_parse_request_2( &$wp ) {
 			), $new_file_path );
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			wp_update_attachment_metadata( $upload_id, wp_generate_attachment_metadata( $upload_id, $new_file_path ) );
-			// wp_redirect( $wordpress_upload_dir['url'] . '/' . basename( $new_file_path ) );
-			
-			echo "\n";
-			echo "\n";
-			echo '<pre> $upload_id'.$upload_id.'</pre>';
-			echo "\n";
-			echo '<pre> $upload_id'.$upload_id.'</pre>';
-			echo "\n";
-
 			echo wp_get_attachment_image( 
 				$upload_id, 
 				array('700', '600'), 
 				"", 
 				array( "class" => "img-responsive" )
 			);
-
 			$image_attributes = wp_get_attachment_image_src( $upload_id,'medium' );
-			echo "\n";
-			echo "\n";
-			echo "\n";
-			print_r($image_attributes[0]);
-
-			echo "\n";
-			echo "\n";
-			echo "\n";
-
-
-
-			// print(upload_id
-
-
 			$sql = "
 			update ".$GLOBALS['wpdb']->prefix."fix158716 set 
 				fix158716_foto = '".$image_attributes[0]."' 
 			where fix158716_codigo=".$cod.";
 			";
-
-			echo $sql;
     		$wpdb->query( $sql );
 		}
-
-
-//https://d1587165408.shoppbox.com.br/wp-content/uploads/2020/04/Captura de tela de 2020-04-17 19-21-38.png
-
-
-
-		// plugin_dir_url( fix158716__file__() )."img/foto.png";
-		
-
-		// $wpdb->query( $sql );
-		// }
 		exit;
 	}
 	if($wp->request == 'fix158716_exportar_tabela_y'){
@@ -1880,479 +1756,12 @@ function fix158716_parse_request_2( &$wp ) {
 
 }
 
-
-
-
-add_action( 'admin_menu', 'fix158716_admin_menu_page' );
-function fix158716_admin_menu_page (){
-    add_menu_page( 
-        'Pessoas',
-        'Pessoas',
-        'manage_options',
-        'fix158716_admin_list',
-        'fix158716_admin_list',
-        plugins_url( 'myplugin/images/icon.png' ),
-        6
-    ); 
-}
-function fix158716_admin_list(){
-    echo 'Pessoas'; 
-    echo do_shortcode('[fix158716_list_by_admin]');
-}
-	
-
-add_shortcode("fix158716_list_by_admin", "fix158716_list_by_admin");
-function fix158716_list_by_admin($atts, $content = null){
-	$vai = 0;
-	if(current_user_can('administrator')) $vai = 1;
-	// if(current_user_can('fix-administrativo')) $vai = 1;
-	if(!$vai) {	return '<!--não disponivel-->';}
-	ob_start();
-	?>
-	<div id="fix158716_list_dv" class="fix158716_list_dv">
-		<style type="text/css">
-			#fix158716_mnum_mask {
-				position: fixed;
-				top: 0px;
-				left: 0px;
-				width: 100%;
-				height: 100%;
-				background-color: rgba(0,0,0,0.5);
-				z-index: 9990;
-			}
-			#fix158716_mnum_dv {
-				position: absolute;
-				left: 0px;
-				margin-left: 0px;
-				top: 0px;
-				background-color: white;
-				width: 200px;
-				min-height: 30px;
-				border: 1px solid gray;
-				z-index: 9991;
-
-				-moz-border-radius: 10px;
-				-webkit-border-radius: 10px;
-				border-radius: 10px;
-				padding: 5px 10px;
-
-				-moz-box-shadow: 5px 5px 10px gra;
-				-webkit-box-shadow: 5px 5px 10px black;
-				box-shadow: 5px 5px 10px black;
-
-			}
-			.clicado_ {
-				background-color: silver;
-			}
-			.fix158716_list_ tr td {
-				border:1px solid black;
-			} 
-		</style>
-		<script type="text/javascript">
-			var mousex = 0;
-			var mousey = 0;
-			jQuery("html").mousemove(function(mouse){
-				mousex = mouse.pageX;
-				mousey = mouse.pageY;
-			});
-
-			jQuery(function($){
-				$('.fix158716_mnut').on('click',function(e){
-					$('body').append('<div id="fix158716_mnum_mask"></div>');
-					$('body').append('<div id="fix158716_mnum_dv">abrindo...</div>');
-					$('#fix158716_mnum_dv').load('<?php echo site_url() ?>/fix158716_mnut_by_admin/');
-					$('#fix158716_mnum_mask').on('click',function(e){
-						$('#fix158716_mnum_mask').remove();
-						$('#fix158716_mnum_dv').remove();
-					});
-					$('#fix158716_mnum_dv').css('left',mousex+'px');
-					$('#fix158716_mnum_dv').css('top',mousey+'px');
-				});
-				$('.fix158716_mnum').on('click',function(e){
-					var cod = $(this).parent().attr('data-codigo');
-					console.log('fix158716_mnum: '+cod);
-					$('body').append('<div id="fix158716_mnum_mask"></div>');
-					$('body').append('<div id="fix158716_mnum_dv">abrindo...</div>');
-					$('#fix158716_mnum_dv').load('<?php echo site_url() ?>/fix158716_mnum_by_admin/?cod='+cod);
-					$('#fix158716_mnum_mask').on('click',function(e){
-						$('#fix158716_mnum_mask').remove();
-						$('#fix158716_mnum_dv').remove();
-					});
-
-					$('#fix158716_mnum_dv').css('left',mousex+'px');
-					$('#fix158716_mnum_dv').css('top',mousey+'px');
-
-				});
-				$('.fix158716_list tr').on('click',function(){
-					$( this ).toggleClass( "clicado" );
-				});
-			});
-		</script>
-
-
-			<?php
-			echo do_shortcode('[fix_001940_list 
-				md=fix158716 
-				col_x0="..." 
-				col_xt="..." 
-				un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_foto " 
-				col__url="fix158716_nome_completo,<a href=../detalhes/?cod=__fix158716_codigo__>__this__</a>"
-			]');
-			?>
-
-		</div>
-
-
-
-
-		
-	<?php
-	
-	return ob_get_clean();
-}
-
-
-add_shortcode("fix158716_mnum_by_admin", "fix158716_mnum_by_admin");
-function fix158716_mnum_by_admin($atts, $content = null){
-
-	global $wpdb;
-	$cod = isset($_GET['cod']) ? $_GET['cod'] : 0;
-	?>
-	<style type="text/css">
-		#fix158716_mnum_btn_view_mask {
-			position: fixed;
-			top: 0px;
-			left: 0px;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0,0,0,0.5);
-			z-index: 9993;
-		}
-		#fix158716_mnum_btn_view_dv {
-			position: fixed;
-			left: 30vw;
-			top: 10vh;
-			background-color: white;
-			width: 40vw;
-			height: 80vh;
-			border: 1px solid gray;
-			z-index: 9994;
-			overflow: auto;
-
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
-			border-radius: 10px;
-			padding: 5px 10px;
-
-			-moz-box-shadow: 5px 5px 10px gra;
-			-webkit-box-shadow: 5px 5px 10px black;
-			box-shadow: 5px 5px 10px black;
-
-		}
-
-		#fix158716_mnum_btn_editar_mask {
-			position: fixed;
-			top: 0px;
-			left: 0px;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0,0,0,0.5);
-			z-index: 9993;
-		}
-		#fix158716_mnum_btn_editar_dv {
-			position: fixed;
-			left: 30vw;
-			top: 10vh;
-			background-color: white;
-			width: 40vw;
-			height: 80vh;
-			border: 1px solid gray;
-			z-index: 9994;
-			overflow: auto;
-
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
-			border-radius: 10px;
-			padding: 5px 10px;
-
-			-moz-box-shadow: 5px 5px 10px gra;
-			-webkit-box-shadow: 5px 5px 10px black;
-			box-shadow: 5px 5px 10px black;
-
-		}
-		@media (max-width: 600px) {
-			#fix158716_mnum_btn_editar_dv {
-				left: 5vw;
-				width: 90vw;
-				top: 5vh;
-				min-height: 200px;
-			}
-		}
-
-
-		#fix158716_mnum_btn_deletar_mask {
-			position: fixed;
-			top: 0px;
-			left: 0px;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0,0,0,0.5);
-			z-index: 9993;
-		}
-		#fix158716_mnum_btn_deletar_dv {
-			position: fixed;
-			left: 50%;
-			margin-left: -250px;
-			top: 100px;
-			background-color: white;
-			width: 500px;
-			min-height: 300px;
-			border: 1px solid gray;
-			z-index: 9994;
-
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
-			border-radius: 10px;
-			padding: 5px 10px;
-
-			-moz-box-shadow: 5px 5px 10px gra;
-			-webkit-box-shadow: 5px 5px 10px black;
-			box-shadow: 5px 5px 10px black;
-
-		}
-	</style>
-	<script type="text/javascript">
-		jQuery(function($){
-			$('#fix158716_mnum_btn_deletar').on('click',function(e){
-				e.preventDefault();
-				var cod = $(this).attr('data-cod');
-				// console.log('fix158716_mnum_btn_deletar: '+cod);
-				$('body').append('<div id="fix158716_mnum_btn_deletar_mask"></div>');
-				$('body').append('<div id="fix158716_mnum_btn_deletar_dv">abrindo...</div>');
-				$('#fix158716_mnum_btn_deletar_dv').load('<?php echo site_url() ?>/fix158716_deletar/?cod='+cod);
-				$('#fix158716_mnum_btn_deletar_mask').on('click',function(e){
-					$('#fix158716_mnum_btn_deletar_mask').remove();
-					$('#fix158716_mnum_btn_deletar_dv').remove();
-
-					$('#fix158716_mnum_mask').remove();
-					$('#fix158716_mnum_dv').remove();
-
-				});
-
-			});
-
-			$('#fix158716_mnum_btn_view').on('click',function(e){
-				e.preventDefault();
-				var cod = $(this).attr('data-cod');
-				// console.log('fix158716_mnum_btn_view: '+cod);
-				$('body').append('<div id="fix158716_mnum_btn_view_mask"></div>');
-				$('body').append('<div id="fix158716_mnum_btn_view_dv">abrindo...</div>');
-				$('#fix158716_mnum_btn_view_dv').load('<?php echo site_url() ?>/fix158716_view_by_admin/?cod='+cod);
-				$('#fix158716_mnum_btn_view_mask').on('click',function(e){
-					$('#fix158716_mnum_btn_view_mask').remove();
-					$('#fix158716_mnum_btn_view_dv').remove();
-					$('#fix158716_mnum_mask').remove();
-					$('#fix158716_mnum_dv').remove();
-				});
-			});
-
-			$('#fix158716_mnum_btn_editar').on('click',function(e){
-				e.preventDefault();
-				var cod = $(this).attr('data-cod');
-				// console.log('fix158716_mnum_btn_editar: '+cod);
-				$('body').append('<div id="fix158716_mnum_btn_editar_mask"></div>');
-				$('body').append('<div id="fix158716_mnum_btn_editar_dv">abrindo...</div>');
-				$('#fix158716_mnum_btn_editar_dv').load('<?php echo site_url() ?>/fix158716_edit/?cod='+cod);
-				$('#fix158716_mnum_btn_editar_mask').on('click',function(e){
-					$('#fix158716_mnum_btn_editar_mask').remove();
-					$('#fix158716_mnum_btn_editar_dv').remove();
-					$('#fix158716_mnum_mask').remove();
-					$('#fix158716_mnum_dv').remove();
-				});
-			});
-			$('#fix158716_mnum_btn_nnew').on('click',function(e){
-				e.preventDefault();
-				var cod = $(this).attr('data-cod');
-				// console.log('fix158716_mnum_btn_editar: '+cod);
-				$('body').append('<div id="fix158716_mnum_btn_editar_mask"></div>');
-				$('body').append('<div id="fix158716_mnum_btn_editar_dv">abrindo...</div>');
-				$('#fix158716_mnum_btn_editar_dv').load('<?php echo site_url() ?>/fix158716_nnew/');
-				$('#fix158716_mnum_btn_editar_mask').on('click',function(e){
-					$('#fix158716_mnum_btn_editar_mask').remove();
-					$('#fix158716_mnum_btn_editar_dv').remove();
-					$('#fix158716_mnum_mask').remove();
-					$('#fix158716_mnum_dv').remove();
-				});
-			});
-
-
-
-		});
-	</script>
-	<!--div><a id="fix158716_mnum_btn_detalhes" data-cod="<?php echo $cod ?>" href="../detalhes/?cod=<?php echo $cod ?>">DETALHES</a></div-->
-	<div><a id="fix158716_mnum_btn_view" data-cod="<?php echo $cod ?>" href="#">DETALHES</a></div>
-	<div><a id="fix158716_mnum_btn_editar" data-cod="<?php echo $cod ?>" href="#">EDITAR</a></div>
-	<div><a id="fix158716_mnum_btn_deletar" data-cod="<?php echo $cod ?>" href="#">DELETAR</a></div>
-
-	<?php
-}
-
-add_shortcode("fix158716_mnut_by_admin", "fix158716_mnut_by_admin");
-function fix158716_mnut_by_admin($atts, $content = null){
-	ob_start();
-	?>
-	<style type="text/css">
-		#fix158716_mnut_btn_nnew_mask {
-			position: fixed;
-			top: 0px;
-			left: 0px;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0,0,0,0.5);
-			z-index: 9993;
-		}
-		#fix158716_mnut_btn_nnew_dv {
-			position: absolute;
-			left: 30vw;
-			top: 20vh;
-			background-color: white;
-			width: 40vw;
-			min-height: 300px;
-			border: 1px solid gray;
-			z-index: 9994;
-
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
-			border-radius: 10px;
-			padding: 5px 10px;
-
-			-moz-box-shadow: 5px 5px 10px gra;
-			-webkit-box-shadow: 5px 5px 10px black;
-			box-shadow: 5px 5px 10px black;
-		}
-		@media (max-width: 600px) {
-			#fix158716_mnut_btn_nnew_dv {
-				left: 5vw;
-				width: 90vw;
-				top: 5vh;
-				min-height: 200px;
-			}
-		}
-
-	</style>
-	<script type="text/javascript">
-		jQuery(function($){
-			$('#fix158716_mnut_btn_nnew').on('click',function(e){
-				e.preventDefault();
-				$('body').append('<div id="fix158716_mnut_btn_nnew_mask"></div>');
-				$('body').append('<div id="fix158716_mnut_btn_nnew_dv">abrindo...</div>');
-				$('#fix158716_mnut_btn_nnew_dv').load('<?php echo site_url() ?>/fix158716_nnew/');
-				$('#fix158716_mnut_btn_nnew_mask').on('click',function(e){
-					$('#fix158716_mnut_btn_nnew_mask').remove();
-					$('#fix158716_mnut_btn_nnew_dv').remove();
-					$('#fix158716_mnut_mask').remove();
-					$('#fix158716_mnut_dv').remove();
-				});
-			});
-			$('#fix158716_mnut_btn_buscar').on('click',function(e){
-				e.preventDefault();
-				$('body').append('<div id="fix158716_mnut_btn_nnew_mask"></div>');
-				$('body').append('<div id="fix158716_mnut_btn_nnew_dv">abrindo...</div>');
-				$('#fix158716_mnut_btn_nnew_dv').load('<?php echo site_url() ?>/fix158716_buscar/');
-				$('#fix158716_mnut_btn_nnew_mask').on('click',function(e){
-					$('#fix158716_mnut_btn_nnew_mask').remove();
-					$('#fix158716_mnut_btn_nnew_dv').remove();
-					$('#fix158716_mnut_mask').remove();
-					$('#fix158716_mnut_dv').remove();
-				});
-			});
-			$('#fix158716_mnut_btn_limpar_tabela').on('click',function(e){
-				e.preventDefault();
-				$('body').append('<div id="fix158716_mnut_btn_nnew_mask"></div>');
-				$('body').append('<div id="fix158716_mnut_btn_nnew_dv">abrindo...</div>');
-				$('#fix158716_mnut_btn_nnew_dv').load('<?php echo site_url() ?>/fix158716_limpar_tabela/');
-				$('#fix158716_mnut_btn_nnew_mask').on('click',function(e){
-					$('#fix158716_mnut_btn_nnew_mask').remove();
-					$('#fix158716_mnut_btn_nnew_dv').remove();
-					$('#fix158716_mnut_mask').remove();
-					$('#fix158716_mnut_dv').remove();
-				});
-			});
-			$('#fix158716_mnut_btn_importar_tabela').on('click',function(e){
-				e.preventDefault();
-				$('body').append('<div id="fix158716_mnut_btn_nnew_mask"></div>');
-				$('body').append('<div id="fix158716_mnut_btn_nnew_dv">abrindo...</div>');
-				$('#fix158716_mnut_btn_nnew_dv').load('<?php echo site_url() ?>/fix158716_importar_tabela/');
-				$('#fix158716_mnut_btn_nnew_mask').on('click',function(e){
-					$('#fix158716_mnut_btn_nnew_mask').remove();
-					$('#fix158716_mnut_btn_nnew_dv').remove();
-					$('#fix158716_mnut_mask').remove();
-					$('#fix158716_mnut_dv').remove();
-				});
-			});
-			$('#fix158716_mnut_btn_exportar_tabela').on('click',function(e){
-				e.preventDefault();
-				$('body').append('<div id="fix158716_mnut_btn_nnew_mask"></div>');
-				$('body').append('<div id="fix158716_mnut_btn_nnew_dv">abrindo...</div>');
-				$('#fix158716_mnut_btn_nnew_dv').load('<?php echo site_url() ?>/fix158716_exportar_tabela/');
-				$('#fix158716_mnut_btn_nnew_mask').on('click',function(e){
-					$('#fix158716_mnut_btn_nnew_mask').remove();
-					$('#fix158716_mnut_btn_nnew_dv').remove();
-					$('#fix158716_mnut_mask').remove();
-					$('#fix158716_mnut_dv').remove();
-				});
-			});
-
-
-
-
-		});
-	</script>
-	<div><a id="fix158716_mnut_btn_nnew" href="#">NOVO</a></div>
-	<div><a id="fix158716_mnut_btn_buscar" href="#">BUSCAR</a></div>
-	<div><a id="fix158716_mnut_btn_limpar_tabela" href="#">LIMPAR TABELA</a></div>
-	<div><a id="fix158716_mnut_btn_importar_tabela" href="#">IMPORTAR TABELA</a></div>
-	<div><a id="fix158716_mnut_btn_exportar_tabela" href="#">EXPORTAR TABELA</a></div>
-	<div><a id="fix158716_mnut_btn__exportar_tabela" href="<?php echo site_url() ?>/fix158716_exportar_tabela_y">-----EXPORTAR TABELA</a></div>
-	<?php
-	return ob_get_clean();
-}
-
-add_shortcode("fix158716_view_foto_by_admin", "fix158716_view_foto_by_admin");
-function fix158716_view_foto_by_admin($atts, $content = null){
-	ob_start();
-	$cod = isset($_GET['cod']) ? $_GET['cod'] : '';
-	$sql = "select fix158716_foto from ".$GLOBALS['wpdb']->prefix."fix158716 where fix158716_codigo = ".$cod.";";
-	$tb = fix_001940_db_exe($sql,'rows');
-	$foto = $tb['rows'][0]['fix158716_foto'];
-	// echo "-- $foto --";
-	?>
-	<div style="width: 100%; height:300px; background: url(<?=$foto ?>);background-size: contain;background-repeat: no-repeat;"></div>
-	<?php
-	return ob_get_clean();
-}
-
-add_shortcode("fix158716_view_by_admin", "fix158716_view_by_admin");
-function fix158716_view_by_admin($atts, $content = null){
-	
-	echo do_shortcode('[fix158716_view_foto_by_admin]');
-	echo do_shortcode('[fix158716_form_upload_foto]');
-	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
-	
-}
-
 function fix158716_get_cols(){
 	$sql = "SHOW COLUMNS FROM ".$GLOBALS['wpdb']->prefix.'fix158716';
 	$tb = fix_001940_db_exe($sql,'rows');
-	// print('<pre>');
-	// print_r($tb['rows']);
-	// print('</pre>');
 	$cols = '';
 	$i = 0;
 	foreach ($tb['rows'] as $row) {
-		// print('<pre>');
-		// print_r($row['Field']);
-		// print('</pre>');
 		if($i) $cols .= ', ';
 		$cols .= $row['Field'];
 		$i++;
@@ -2361,39 +1770,22 @@ function fix158716_get_cols(){
 }
 
 function fix158716_export_csv(){
+	$connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);  
+	header('Content-Type: text/csv; charset=utf-8');  
+	header('Content-Disposition: attachment; filename=fix158716.csv');  
+	$output = fopen("php://output", "w");  
+	fputcsv($output, array('fix158716_codigo', 'fix158716_nome', 'fix158716_nascimento' ));  
+	// $query = "SELECT fix158716_codigo, fix158716_nome, fix158716_nascimento from ".$GLOBALS['wpdb']->prefix."fix158716 ORDER BY fix158716_codigo ASC";  
+	$cols = fix158716_get_cols();
+	$query = "SELECT ".$cols." from ".$GLOBALS['wpdb']->prefix."fix158716 ORDER BY fix158716_codigo ASC";  
+	$result = mysqli_query($connect, $query);  
+	while($row = mysqli_fetch_assoc($result)) {  
+		fputcsv($output, $row);  
+	}  
+	fclose($output);  
 
-
-		// echo $cols;
-		// return '';
-
-	// if(isset($_POST["export"])) {  
-
-		/*
-	$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-	$mysqli->multi_query($sql);
-
-		*/
-		$connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);  
-		header('Content-Type: text/csv; charset=utf-8');  
-		header('Content-Disposition: attachment; filename=fix158716.csv');  
-		$output = fopen("php://output", "w");  
-		fputcsv($output, array('fix158716_codigo', 'fix158716_nome', 'fix158716_nascimento' ));  
-		// $query = "SELECT fix158716_codigo, fix158716_nome, fix158716_nascimento from ".$GLOBALS['wpdb']->prefix."fix158716 ORDER BY fix158716_codigo ASC";  
-		$cols = fix158716_get_cols();
-		$query = "SELECT ".$cols." from ".$GLOBALS['wpdb']->prefix."fix158716 ORDER BY fix158716_codigo ASC";  
-		$result = mysqli_query($connect, $query);  
-		while($row = mysqli_fetch_assoc($result)) {  
-			fputcsv($output, $row);  
-		}  
-		fclose($output);  
-	// }
 }
 
-// add_shortcode("fix158716_view_by_admin", "fix158716_view_by_admin");
-// function fix158716_view_by_admin($atts, $content = null){
-// 	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
-	
-// }
 add_shortcode("fix158716_form_upload_foto", "fix158716_form_upload_foto");
 function fix158716_form_upload_foto($atts, $content = null){
 	ob_start();
@@ -2447,10 +1839,6 @@ function fix158716_form_upload_foto($atts, $content = null){
 	*/
 }
 function fix158716_import_csv(){
-
-
-
-
 	?>
 	<form id="sample_form" method="POST" enctype="multipart/form-data" class="form-horizontal">
 		<div class="form-group">
@@ -2497,70 +1885,9 @@ function fix158716_file_import_csv(){
 	ini_set("mysqli.allow_local_infile", "On");
 	ini_set("display_errors", 1);
 	error_reporting(E_ALL|E_STRICT);
-	//mysqli.allow_local_infile = On
-	 
-
-
-	// $sql = "SHOW COLUMNS FROM ".$GLOBALS['wpdb']->prefix.'fix158716';
-	// $tb = fix_001940_db_exe($sql,'rows');
-	// print('<pre>');
-	// print_r($tb['rows']);
-	// print('</pre>');
-
-	// return '';
-
-
-
-	print_r($_FILES);
 
 	if(!empty($_FILES['file']['name'])){
-		// $connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);  
- 		// $total_row = count(file($_FILES['file']['tmp_name']));
-		// $file_location = str_replace("\\", "/", $_FILES['file']['tmp_name']);
 		$file_location = $_FILES['file']['tmp_name'];
-
-		// $file_location = "/var/www/clients/client5/web5/web/wp-content/plugins/fix158716-pessoas/fix158716.csv";
-
-
-
-		$sql = '
-		LOAD DATA LOCAL INFILE "'.$file_location.'" IGNORE 
-		INTO TABLE '.$GLOBALS['wpdb']->prefix.'fix158716 
-		FIELDS TERMINATED BY "," 
-		LINES TERMINATED BY "\r\n" 
-		IGNORE 1 LINES 
-		(@column1,@column2,@column3,@column4) 
-		SET 
-			fix158716_codigo = @column1, 
-			fix158716_nome = @column2
-		';
-
-		$sql = "
-		load data local infile '".$file_location."' 
-		into table ".$GLOBALS['wpdb']->prefix."fix158716
-	    fields terminated by ','
-	    enclosed by '\"'
-	    lines terminated by '\n'
-	    IGNORE 1 LINES 
-	    (fix158716_codigo,fix158716_nome);
-	    ";
-
-
-
-
-	    $cols = fix158716_get_cols();
-		$sql = "
-			LOAD DATA local INFILE '".$file_location."' 
-			INTO TABLE ".$GLOBALS['wpdb']->prefix."fix158716 
-			CHARACTER SET 'utf8' 
-			FIELDS TERMINATED BY ',' 
-			ENCLOSED BY '\"' 
-			IGNORE 1 LINES 
-			(fix158716_codigo, fix158716_nome, fix158716_nascimento)
-		;
-		";
-
-
 	    $cols = fix158716_get_cols();
 		$sql = "
 			LOAD DATA local INFILE '".$file_location."' 
@@ -2572,18 +1899,10 @@ function fix158716_file_import_csv(){
 			(".$cols.")
 		;
 		";
-
-
 		echo $sql;
-
-
-	global $wpdb;
-	$wpdb->query( $sql );
-
-
+		global $wpdb;
+		$wpdb->query( $sql );
 	}
-
-
 }
 
 function fix158716_limpar_tabela(){
