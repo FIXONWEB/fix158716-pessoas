@@ -1700,29 +1700,102 @@ function fix158716_parse_request_2( &$wp ) {
 		print_r($_FILES);
 		print_r($_POST);
 
-		if(!empty($_FILES['file']['name'])){
-			$file_location = $_FILES['file']['tmp_name'];
-			
-			// $uploaddir = '/var/www/uploads/';
-			$cod = isset($_POST['cod']) ? $_POST['cod'] : '';
-			$uploaddir = plugin_dir_path( fix158716__file__() )."fotos/foto-".$cod."-".time().".png";
-			$uploaddir_path = plugin_dir_url( fix158716__file__() )."fotos/foto-".$cod."-".time().".png";
-			echo $uploaddir;
-
-			if (move_uploaded_file($file_location , $uploaddir)) {
-    			echo "Arquivo válido e enviado com sucesso.\n";
-    			$sql = "update ".$GLOBALS['wpdb']->prefix."fix158716 set fix158716_foto = '".$uploaddir_path."' where fix158716_codigo=".$cod.";";
-    			$wpdb->query( $sql );
-			} else {
-    			echo "Fail!\n";
-			}
+		$cod = isset($_POST['cod']) ? $_POST['cod'] : '';
 
 
-			// plugin_dir_url( fix158716__file__() )."img/foto.png";
-			
 
-			// $wpdb->query( $sql );
+
+
+		$wordpress_upload_dir = wp_upload_dir();
+		// $wordpress_upload_dir['path'] is the full server path to wp-content/uploads/2017/05, for multisite works good as well
+		// $wordpress_upload_dir['url'] the absolute URL to the same folder, actually we do not need it, just to show the link to file
+		$i = 1; // number of tries when the file with the same name is already exists
+
+		$profilepicture = $_FILES['profilepicture'];
+
+		// $profilepicture['name'] = preg_replace('/\.[^.]+$/', '', $profilepicture['name']);
+		$profilepicture['name'] = preg_replace('/ /', '-', $profilepicture['name']);
+
+
+		$new_file_path = $wordpress_upload_dir['path'] . '/' . $profilepicture['name'];
+		// $new_file_path = $wordpress_upload_dir['path'] . '/' . 'foto-'.$cod;
+		$new_file_mime = mime_content_type( $profilepicture['tmp_name'] );
+
+		if( empty( $profilepicture ) ) die( 'File is not selected.' );
+		if( $profilepicture['error'] ) die( $profilepicture['error'] );
+		if( $profilepicture['size'] > wp_max_upload_size() ) die( 'It is too large than expected.' );
+		if( !in_array( $new_file_mime, get_allowed_mime_types() ) ) die( 'WordPress doesn\'t allow this type of uploads.' );
+
+		while( file_exists( $new_file_path ) ) {
+			$i++;
+			$new_file_path = $wordpress_upload_dir['path'] . '/' . $i . '_' . $profilepicture['name'];
 		}
+
+		echo '<pre>'.$new_file_path.'</pre>';
+
+
+		// looks like everything is OK
+		if( move_uploaded_file( $profilepicture['tmp_name'], $new_file_path ) ) {
+			$upload_id = wp_insert_attachment( array(
+				'guid'           => $new_file_path, 
+				'post_mime_type' => $new_file_mime,
+				'post_title'     => preg_replace( '/\.[^.]+$/', '', $profilepicture['name'] ),
+				'post_content'   => '',
+				'post_status'    => 'inherit'
+			), $new_file_path );
+			require_once( ABSPATH . 'wp-admin/includes/image.php' );
+			wp_update_attachment_metadata( $upload_id, wp_generate_attachment_metadata( $upload_id, $new_file_path ) );
+			// wp_redirect( $wordpress_upload_dir['url'] . '/' . basename( $new_file_path ) );
+			
+			echo "\n";
+			echo "\n";
+			echo '<pre> $upload_id'.$upload_id.'</pre>';
+			echo "\n";
+			echo '<pre> $upload_id'.$upload_id.'</pre>';
+			echo "\n";
+
+			echo wp_get_attachment_image( 
+				$upload_id, 
+				array('700', '600'), 
+				"", 
+				array( "class" => "img-responsive" )
+			);
+
+			$image_attributes = wp_get_attachment_image_src( $upload_id,'medium' );
+			echo "\n";
+			echo "\n";
+			echo "\n";
+			print_r($image_attributes[0]);
+
+			echo "\n";
+			echo "\n";
+			echo "\n";
+
+
+
+			// print(upload_id
+
+
+			$sql = "
+			update ".$GLOBALS['wpdb']->prefix."fix158716 set 
+				fix158716_foto = '".$image_attributes[0]."' 
+			where fix158716_codigo=".$cod.";
+			";
+
+			echo $sql;
+    		$wpdb->query( $sql );
+		}
+
+
+//https://d1587165408.shoppbox.com.br/wp-content/uploads/2020/04/Captura de tela de 2020-04-17 19-21-38.png
+
+
+
+		// plugin_dir_url( fix158716__file__() )."img/foto.png";
+		
+
+		// $wpdb->query( $sql );
+		// }
 		exit;
 	}
 	if($wp->request == 'fix158716_exportar_tabela_y'){
@@ -2346,7 +2419,21 @@ function fix158716_form_upload_foto($atts, $content = null){
 			});
 		});
 	</script>
-	<form id="fix158716_form_upload_foto" method="POST" enctype="multipart/form-data" class="">
+
+	<form id="fix158716_form_upload_foto" action="<?php echo get_stylesheet_directory_uri() ?>/process_upload.php" method="post" enctype="multipart/form-data">
+	FOTO: <input type="file" name="profilepicture" size="25" />
+	<input type="hidden" name="cod" value="<?php echo isset($_GET['cod']) ? $_GET['cod'] : '' ?>" />
+	<input type="submit" name="submit" value="Submit" />
+	</form>
+
+
+
+
+	<?php
+	return ob_get_clean();
+
+	/*
+	<form id="fix158716_form_upload_foto_" method="POST" enctype="multipart/form-data" class="">
 		<div class="">
 			<label class="">FOTO:</label>
 			<input type="file" name="file" id="file" accept=".png" />
@@ -2357,8 +2444,7 @@ function fix158716_form_upload_foto($atts, $content = null){
 		<div class="fix158716_form_upload_foto_msg"></div>
 	</form>
 
-	<?php
-	return ob_get_clean();
+	*/
 }
 function fix158716_import_csv(){
 
