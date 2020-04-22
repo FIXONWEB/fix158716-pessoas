@@ -1784,7 +1784,7 @@ function fix158716_parse_request_2( &$wp ) {
 	}
 
 
-	if($wp->request == 'administrativo/pessoas/listagem'){
+	if($wp->request == 'administrativo/pessoas/listagem__'){
 		$go = 0;
 		if(current_user_can('fix-administrativo')) $go=1;
 		if(current_user_can('administrator')) $go=1;
