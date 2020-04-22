@@ -211,95 +211,6 @@ function fix158716_parse_request( &$wp ) {
 		exit;
 	}
 	
-	if($wp->request == 'register-time-and-ip'){
-		// 		fix158716_origem varchar(60),
-		// fix158716_time int,
-		// fix158716_dif_anterior int,
-
-		$sql = "select fix158716_time from ".$GLOBALS['wpdb']->prefix."fix158716 limit 0,1 order by fix158716_codigo desc";
-		$sql = "select fix158716_time from ".$GLOBALS['wpdb']->prefix."fix158716 order by fix158716_codigo desc limit 0,1;";
-		$tb = fix_001940_db_exe($sql,'rows');
-		$time_anterior = $tb['rows'][0]['fix158716_time'];
-
-
-		$ip_remoto = $_SERVER['REMOTE_ADDR'];
-		$agora = time();
-
-		$diferenca = $agora - $time_anterior;
-
-		$sql = "
-		insert into ".$GLOBALS['wpdb']->prefix."fix158716 (
-			fix158716_origem,
-			fix158716_time,
-			fix158716_dif_anterior			
-		) values (
-			'".$ip_remoto."',
-			'".$agora."',
-			'".$diferenca."'
-		);
-		";
-		global $wpdb;
-		$wpdb->query( $sql );
-		echo 'ok';
-		exit;
-
-	}
-	if($wp->request == 'fix158716_json_view'){
-		global $wpdb;
-		$cod = $_POST['cod'];
-		$sql = "select * from ".$wpdb->prefix."fix158716 where fix158716_codigo = ".$cod;
-		$tb = fix_001940_db_exe($sql,'rows');
-		$row = $tb['rows'][0];
-		$ret = json_encode($row);
-		echo $ret; 
-		exit;
-	}
-	if($wp->request == 'fix158716/listagem'){
-		$sql = "select * from ".$GLOBALS['wpdb']->prefix."fix001940 where fix001940_tabela= 'fix158716';";
-		$tb = fix_001940_db_exe($sql,'rows');
-		$row = $tb['rows'][0];
-		$descri = $row['fix001940_descri'];
-		if(!$descri) $descri = $row['fix001940_tabela'];
-		get_header();
-		?>
-		<div style="display: grid;grid-template-columns: 1fr 1fr;">
-			<div><h3><?php echo $descri ?></h3></div>
-			<div></div>
-		</div>
-		
-		<?php
-		echo do_shortcode('[fix158716_paged]') ;
-		echo do_shortcode('[fix158716_list]') ;
-		
-		
-		get_footer();
-		exit;
-	}
-	if($wp->request == 'fix158716/detalhes'){
-		get_header();
-		$sql = "select * from ".$GLOBALS['wpdb']->prefix."fix001940 where fix001940_tabela= 'fix158716';";
-		$tb = fix_001940_db_exe($sql,'rows');
-		$row = $tb['rows'][0];
-		$descri = $row['fix001940_descri'];
-		if(!$descri) $descri = $row['fix001940_tabela'];
-
-		?>
-		<div style="display: grid;grid-template-columns: 1fr 1fr;">
-			<div>
-				<h3><?php echo $descri ?> - Detalhes</h3>	
-			</div>
-			<div><a href="../listagem/">modo listagem</a></div>
-		</div>
-		<div style="border: 1px solid gray;padding: 5px;border-radius: 10px;margin: 5px;">
-			<?php echo do_shortcode('[fix158716_detalhes]') ; ?>
-			<?php echo do_shortcode('[fix158381_list_filter1]') ; ?>
-		</div>
-
-		<?php
-		get_footer();
-		exit;
-	}
-
 
 
 
@@ -345,14 +256,6 @@ function fix158716_parse_request( &$wp ) {
 		if(current_user_can('fix-administrativo')) $vai = 1;
 		if(!$vai) {	return '<!--não disponivel-->';}
 		echo do_shortcode('[fix158716_deletar]');
-		exit;
-	}
-	if($wp->request == 'fix158716_adm_edit'){
-		$vai = 0;
-		if(current_user_can('administrator')) $vai = 1;
-		if(current_user_can('fix-administrativo')) $vai = 1;
-		if(!$vai) {	return '<!--não disponivel-->';}
-		echo do_shortcode('[fix158716_adm_edit]');
 		exit;
 	}
 	if($wp->request == 'fix158716_mnut'){
@@ -442,31 +345,10 @@ function fix158716_parse_request( &$wp ) {
 		fix158716_delete_table();
 		exit;
 	}
-
-	if(substr($wp->request, 0, 9) == 'fix158716'){
-		if($wp->request == 'fix158716/json/list'){
-			echo 'fix158716/json/list';
-
-			$md 		= 'fix158716';
-			$fields 	= fix_001940_get_fields($md);
-			$col     	= fix_001940_get_md_col($md);
-
-			$rows = fix_001940_get_md_rows($md, $fields, $col);
-			echo '<pre>';
-			print_r($rows);
-			echo '</pre>';
-
-			exit;
-		}
-	}
-
-
 }
 
 
 // --shortcodes
-
-
 add_shortcode("fix158716_deletar", "fix158716_deletar");
 function fix158716_deletar($atts, $content = null){
 	?>
@@ -714,9 +596,7 @@ function fix158716_mnum($atts, $content = null){
 	<?php
 }
 
-//fix158716_adm_edit
-//fix158716_edit
-
+//fix158716_adm_list
 add_shortcode("fix158716_list", "fix158716_list");
 function fix158716_list($atts, $content = null){
 	$vai = 0;
@@ -811,8 +691,8 @@ function fix158716_list($atts, $content = null){
 				md=fix158716 
 				col_x0="..." 
 				col_xt="..." 
-				un_show="fix158716_codigo fix158716_data fix158716_hora " 
-				col__url="fix158716_nome_completo,<a href=../detalhes/?cod=__fix158716_codigo__>__this__</a>"
+				un_show="fix158716_codigo fix158716_data fix158716_hora  fix158716_foto " 
+				col_url="fix158716_nome,<a href=../detalhes/?cod=__fix158716_codigo__>__this__</a>"
 			]');
 			?>
 
@@ -1244,35 +1124,30 @@ function fix158716_nnew($atts, $content = null){
 	return ob_get_clean();
 }
 
-add_shortcode("fix158716_adm_detalhes", "fix158716_adm_detalhes");
-function fix158716_adm_detalhes($atts, $content = null){
-	$vai = 0;
-	if(current_user_can('administrator')) $vai = 1;
-	if(current_user_can('fix-administrativo')) $vai = 1;
-	if(!$vai) {	
-		wp_redirect( home_url() );
-		exit;
-		// return '<!--não disponivel-->';
-	}
+// add_shortcode("fix158716_adm_detalhes", "fix158716_adm_detalhes");
+// function fix158716_adm_detalhes($atts, $content = null){
+// 	$vai = 0;
+// 	if(current_user_can('administrator')) $vai = 1;
+// 	if(current_user_can('fix-administrativo')) $vai = 1;
+// 	if(!$vai) {	
+// 		wp_redirect( home_url() );
+// 		exit;
+// 		// return '<!--não disponivel-->';
+// 	}
 
-	ob_start();
-	echo do_shortcode('[fix_001940_view 
-		md="fix158716" 
-		cod=__cod__ 
-		un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status  fix158716_foto "]
-	');
-	return ob_get_clean();
+// 	ob_start();
+// 	echo do_shortcode('[fix_001940_view 
+// 		md="fix158716" 
+// 		cod=__cod__ 
+// 		un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status  fix158716_foto "]
+// 	');
+// 	return ob_get_clean();
 	
-}
+// }
 
-add_shortcode("fix158716_detalhes_no_restrict", "fix158716_detalhes_no_restrict");
-function fix158716_detalhes_no_restrict($atts, $content = null){
-	// echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
-	
-}
 
-add_shortcode("fix158716_detalhes2", "fix158716_detalhes2");
-function fix158716_detalhes2($atts, $content = null){
+add_shortcode("fix158716_detalhes", "fix158716_detalhes");
+function fix158716_detalhes($atts, $content = null){
 	// echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
 	$cod = isset($_GET['cod'])? $_GET['cod'] :'';
 	$sql = "select * from ".$GLOBALS['wpdb']->prefix."fix158716 where fix158716_codigo = $cod";
@@ -1283,7 +1158,7 @@ function fix158716_detalhes2($atts, $content = null){
 
 	if($row['fix158716_foto']) $path_foto = $row['fix158716_foto'];
 
-	// echo $path_foto;
+	ob_start();
 	?>	
 	<style type="text/css">
 	.fix_001940_view_label {
@@ -1376,6 +1251,7 @@ function fix158716_detalhes2($atts, $content = null){
 
 
 	<?php
+	return ob_get_clean();
 }
 
 //add_action('wp_head', 'fix158716_wp_head');
@@ -1665,48 +1541,6 @@ function fix158716_parse_request_2( &$wp ) {
 		get_footer();
 		exit;
 	}
-
-	if($wp->request == 'pessoas/detalhes'){
-		// if(current_user_can('subscriber')) {
-			// wp_redirect( home_url().'/vendedor/vendas/listagem' );
-			// exit;
-		// }
-		// wp_redirect( home_url() );
-		get_header();
-		?>
-		<div style="text-align: center;">
-			<h2>Pessoas</h2>
-			<div>Detalhes</div>
-		</div>
-		<?php
-		echo do_shortcode('[fix158716_detalhes2]');
-
-		get_footer();
-		exit;
-	}
-
-
-	if($wp->request == 'administrativo/pessoas/listagem__'){
-		$go = 0;
-		if(current_user_can('fix-administrativo')) $go=1;
-		if(current_user_can('administrator')) $go=1;
-		if(!$go){
-			wp_redirect( home_url() );
-			exit;
-		}
-		// wp_redirect( home_url() );
-
-		get_header();
-		?>
-		<div style="text-align: center;">
-			<h2>Administrativo</h2>
-			<h2>Pessoas</h2>
-			<div>Listagem</div>
-		</div>
-		<?php
-		get_footer();
-	}
-
 }
 
 function fix158716_get_cols(){
