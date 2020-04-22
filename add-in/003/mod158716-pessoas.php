@@ -347,12 +347,12 @@ function fix158716_parse_request( &$wp ) {
 		echo do_shortcode('[fix158716_deletar]');
 		exit;
 	}
-	if($wp->request == 'fix158716_edit'){
+	if($wp->request == 'fix158716_adm_edit'){
 		$vai = 0;
 		if(current_user_can('administrator')) $vai = 1;
 		if(current_user_can('fix-administrativo')) $vai = 1;
 		if(!$vai) {	return '<!--não disponivel-->';}
-		echo do_shortcode('[fix158716_edit]');
+		echo do_shortcode('[fix158716_adm_edit]');
 		exit;
 	}
 	if($wp->request == 'fix158716_mnut'){
@@ -713,71 +713,9 @@ function fix158716_mnum($atts, $content = null){
 
 	<?php
 }
-add_shortcode("fix158716_edit", "fix158716_edit");
-function fix158716_edit($atts, $content = null){
-	$cod = isset($_GET['cod']) ? $_GET['cod'] : 0;
-	?>
-	<script type="text/javascript">
-		jQuery(function($){
-			$('#fix158716_edit').on('submit',function(e){
-				e.preventDefault();
-				console.log('fix158716_edit: <?php echo $cod ?>');
-				var dados = $( this ).serialize();
-				var request = jQuery.ajax({
-				    url: "<?php echo site_url() ?>/fix158716_update/?cod="+<?php echo $cod ?>,
-				    type: "POST",
-				    data: dados+'&cod='+<?php echo $cod ?>,
-					dataType: "json"
-				});
-				request.always(function(resposta, textStatus) {
-					if (textStatus != "success") {
-						console.log('fail');
-						alert("Error: " + resposta.statusText); //error is always called .statusText
-					 } else {
-					 	// console.log(resposta.statusText);
-					 	// if ($(".fix158716_list")[0]){
-					 	// 	console.log('tem');
-					 	// 	$(".fix158716_list_dv_load").remove();
-					 	// 	$(".fix158716_list_dv").parent().append('<div class="fix158716_list_dv_load"></div>');
-					 	// 	$(".fix158716_list_dv").remove();
-					 	// 	$(".fix158716_list_dv_load").parent().load('<?php echo site_url() ?>/fix158716_list/');
-					 	// }
-					 	// $('#fix158716_mnum_btn_editar_mask').remove();
-					 	// $('#fix158716_mnum_btn_editar_dv').remove();
-					 	// $('#fix158716_mnum_mask').remove();
-					 	// $('#fix158716_mnum_dv').remove();
-					 	window.location.reload();
-					 }
-				});
-			});		
-		});
-	</script>
-	<?php
-	echo do_shortcode('[fix_001940_edit md=fix158716 cod=__cod__ target_update="#" un_show="
-		fix158716_codigo 
-		fix158716_data 
-		fix158716_hora 
-		fix158716_key_associado 
-		fix158716_key_user 
-		fix158716_url_api 
-		fix158716_token
-		fix158716_code
-		fix158716_reference
-		fix158716_dueDate
-		fix158716_checkoutUrl
-		fix158716_link
-		fix158716_installmentLink
-		fix158716_payNumber
-		fix158716_billetDetails
-		fix158716_bankAccount
-		fix158716_ourNumber
-		fix158716_barcodeNumber
-		fix158716_portfolio
-		"
-	]');
-}
 
-
+//fix158716_adm_edit
+//fix158716_edit
 
 add_shortcode("fix158716_list", "fix158716_list");
 function fix158716_list($atts, $content = null){
@@ -1306,9 +1244,24 @@ function fix158716_nnew($atts, $content = null){
 	return ob_get_clean();
 }
 
-add_shortcode("fix158716_detalhes", "fix158716_detalhes");
-function fix158716_detalhes($atts, $content = null){
-	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
+add_shortcode("fix158716_adm_detalhes", "fix158716_adm_detalhes");
+function fix158716_adm_detalhes($atts, $content = null){
+	$vai = 0;
+	if(current_user_can('administrator')) $vai = 1;
+	if(current_user_can('fix-administrativo')) $vai = 1;
+	if(!$vai) {	
+		wp_redirect( home_url() );
+		exit;
+		// return '<!--não disponivel-->';
+	}
+
+	ob_start();
+	echo do_shortcode('[fix_001940_view 
+		md="fix158716" 
+		cod=__cod__ 
+		un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status  fix158716_foto "]
+	');
+	return ob_get_clean();
 	
 }
 
