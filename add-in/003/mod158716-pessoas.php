@@ -1660,17 +1660,8 @@ function fix158716_niver($atts, $content = null){
 				// if(!$row['nascimento']) $row['nascimento'] = "N/F";
 				$niver = substr($row['fix158716_nascimento'], 8,2)."/".substr($row['fix158716_nascimento'], 5,2);
 				$nome = $row['fix158716_nome'];
-				// if(!$row['first_name']) $row['first_name'] = "N/F";
-
 				$foto = $row['fix158716_foto'];
-
-
-				
-
-				// if($row['fix158716_foto']) $path_foto = $row['fix158716_foto'];
-
-
-
+				$path_foto = plugin_dir_url( fix158716__file__() )."img/foto.png";
 				if(!$foto) $foto = $path_foto;
 				 ?>
 				<div class="fix158716_niver_box">
