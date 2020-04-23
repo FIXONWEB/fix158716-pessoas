@@ -304,6 +304,7 @@ function fix158716_adm_list($atts, $content = null){
 
 
 			<?php
+			echo do_shortcode('[fix158716_paged]');
 			echo do_shortcode('[fix_001940_list 
 				md=fix158716 
 				col_x0="..." 
@@ -429,7 +430,7 @@ function fix158716_adm_detalhes($atts, $content = null){
 
 		</div>
 	</div>
-
+	<a href="../editar/?cod=<?=$cod ?>">edit</a>
 	<div style="height: 50px;"></div>
 
 
@@ -476,6 +477,7 @@ function fix158716_adm_edit($atts, $content = null){
 					 	// $('#fix158716_mnum_mask').remove();
 					 	// $('#fix158716_mnum_dv').remove();
 					 	window.location.reload();
+					 	window.location.href = '../detalhes/?cod=<?=$cod ?>';
 					 }
 				});
 			});		

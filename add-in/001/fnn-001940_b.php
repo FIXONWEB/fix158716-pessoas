@@ -421,7 +421,7 @@ function fix_001940_list($atts, $content = null) {
       });
     </script>
   	<div class="<?php echo $md ?>_list" data-total="<?php echo $total ?>" data-pag="<?php echo $pag ?>" data-busca="<?php echo $busca ?>" style="overflow-y:auto;">
-  		<table id="">
+  		<table style="min-width: 100%;"id="">
 
 
         <?php if(!$no_thead) {?>

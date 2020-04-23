@@ -144,6 +144,7 @@ function fix158716_nnew_by_admin($atts, $content = null){
 			fix158716_data 
 			fix158716_hora 
 			fix158716_id_user 
+			fix158716__foto 
 			"
 		]');
 
@@ -248,6 +249,7 @@ function fix158716_list_by_admin($atts, $content = null){
 
 
 			<?php
+			echo do_shortcode('[fix158716_paged]');
 			echo do_shortcode('[fix_001940_list 
 				md=fix158716 
 				col_x0="..." 
@@ -265,6 +267,7 @@ function fix158716_list_by_admin($atts, $content = null){
 		
 	<?php
 	
+
 	return ob_get_clean();
 }
 

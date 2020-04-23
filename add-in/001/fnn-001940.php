@@ -152,6 +152,8 @@ function fix_001940_recent($atts, $content = null){
   }
 }
 add_shortcode("fix_001940_recent", "fix_001940_recent");
+
+
 function fix_001940_paginacao($atts, $content = null) {
   extract(shortcode_atts(array(
     "md" => '0'
@@ -229,118 +231,6 @@ function fix_001940_paginacao($atts, $content = null) {
 /**/
 }
 add_shortcode("fix_001940_paginacao", "fix_001940_paginacao");
-
-
-function fix_001940_nnew_old1($atts, $content = null) {
-  extract(shortcode_atts(array(
-    "md" => '0',
-    "cod" => '0',
-    "restrito" => 's',
-    "target_insert" => '?op=insert&pai=__pai__',
-    "label_submit" => 'Salvar',
-    "title" => '',
-    "access" => '',
-    "role" => '',
-    "on_op" => '',
-    "un_show" => '',
-    "class" => '',
-    "add_class" => '',
-    "access_manager" => '',
-    "add_cp_class" => '', // add_cp_class="fix_001940_000000_nome:fix_001940_class_busca_nome:__site_url__/ajax_busca_nome/"
-    "combo_ajax" => ''
-  ), $atts));
-  if($access){if(!fix_001940_is_access($access)) return '';}
-  if($role){if(!fix_001940_is_role($role)) return '';}
-  $get_url_if_op = fix_001940_get_op();
-  if($on_op) {
-    if($on_op=="empty"){
-      if($get_url_if_op) return '';
-    }else{
-      if(!$get_url_if_op)  return '';
-      if($get_url_if_op<>$on_op) return '';
-    }
-  }
-  // $rel = isset($_GET['rel']) ? $_GET['rel'] : '';
-  $df['md'] =$md;
-  $md = preg_replace("/__md__/", fix_001940_get_md() , $md);
-  $target_insert = preg_replace("/__md__/", fix_001940_get_md() , $target_insert);
-  $target_insert = preg_replace("/__cod__/", fix_001940_get_cod() , $target_insert);
-  $target_insert = preg_replace("/__pai__/", fix_001940_get_pai() , $target_insert);
-  $ret = '';
-  if(!$md) {$ret = "nnew - md não especificado";}
-  if($ret) {return $ret;exit;}
-  $nnew = fix_001940_get_md_novo($md);
-  //return '';
-
-  //foreach ($nnew as $key => $value) {
-  //  echo '<pre>';
-  //  print_r($value);
-  //  echo '</pre>';
-  //}
-  //return '';
-
-
-  $ret .= '<div style="border:0px solid gray;padding:10px;">';
-  // $ret .= $title;
-  $ret .= '<form id="'.$df['md'].'_nnew" enctype="multipart/form-data" class="form-horizontal '.$add_class.' " action="'.$target_insert.'" method="POST" style="padding:0px;margin:0px;">';
-  
-  for ($i=0; $i < count($nnew['campo']); $i++) {
-    $campo = $nnew['campo'][$i]['name'];
-    $value = isset($_REQUEST[$campo]) ? sanitize_text_field($_REQUEST[$campo]) : '';
-    if(!$nnew['campo'][$i]['value']) $nnew['campo'][$i]['value'] = $value;
-    if(($un_show) && (preg_match("/".$campo."/i", $un_show))){ }else{
-      // ==== combo_ajax_url - imi ====
-      $combo_ajax_url = "";
-      if($combo_ajax){
-        $combo_ajax_e = explode("|", $combo_ajax);
-        foreach ($combo_ajax_e as $key => $value) {
-          $value_e = explode(":", $value);
-          $combo_ajax_url = "";
-          if ($value_e[0]==$campo) {
-            $combo_ajax_tabela = $value_e[1];
-            $combo_ajax_campo1 = $value_e[2];
-            $combo_ajax_campo2 = $value_e[3];
-            $combo_ajax_target1 = $value_e[4];
-            $combo_ajax_target2 = $value_e[5];
-            $combo_ajax_url = "<a href='#' data-tabela='".$combo_ajax_tabela."' data-campo1='".$combo_ajax_campo1."' data-campo2='".$combo_ajax_campo2."' data-target1='".$combo_ajax_target1."' data-target2='".$combo_ajax_target2."' class='fix_001940_combo_ajax'>...</a>";
-          }
-        }
-      }
-      //combo_ajax="fix_001940_000520_pessoa:tabela:campo1:campo2:target_campo1:target_campo2"
-      //combo_ajax="campo_que_chama_o_combo:tabela:tabela_campo1:tabela_campo2:target_campo1:target_campo1"
-      // ==== combo_ajax_url - end ====
-      $ret .= ' <div class="dv_nnew_group" style="margin:4px 0px;">';
-      // $ret .= '   <div class="col1">'.$nnew['campo'][$i]['fieldLabel'].$combo_ajax_url.'</div>';
-      $ret .= '   <div class="col2">';
-      //$ret .= '---'.$nnew['campo'][$i]['type'].'---' ;
-
-      if($nnew['campo'][$i]['type']=='blob'){
-        $ret .= ' <textarea class="form--control" autocomplete="off" id="'.$nnew['campo'][$i]['name'].'" name="'.$nnew['campo'][$i]['name'].'" >'.$nnew['campo'][$i]['value'].'</textarea>';  
-      }elseif($nnew['campo'][$i]['type']=='file'){
-        $ret .= '<input class="form--control" autocomplete="off" type="file" id="'.$nnew['campo'][$i]['name'].'" name="'.$nnew['campo'][$i]['name'].'"/>';
-//<form enctype="multipart/form-data" action="__URL__" method="POST">
-      //}elseif($nnew['campo'][$i]['type']=='date'){
-      //  $ret .= ' <input type="date" dateformat="d M y" style="min-width:100%;" name="'.$nnew['campo'][$i]['name'].'" id="'.$nnew['campo'][$i]['name'].'" class="form--control" value="'.$nnew['campo'][$i]['value'].'" title="" autocomplete="off" placeholder="'.$nnew['campo'][$i]['fieldLabel'].'">';  
-      }else{
-        $ret .= ' <input type="text" style="min-width:100%;" name="'.$nnew['campo'][$i]['name'].'" id="'.$nnew['campo'][$i]['name'].'" class="form--control" value="'.$nnew['campo'][$i]['value'].'" title="" autocomplete="off" placeholder="'.$nnew['campo'][$i]['fieldLabel'].'">';  
-      }
-      $ret .= '   </div>';
-      $ret .= ' </div>';
-    }
-  }
-  $ret .= ' <div style="height:40px;"></div>';
-  $ret .= ' <div class="dv_nnew_group">';
-  $ret .= '   <div class="col1"></div>';
-  $ret .= '   <div class="col2">';
-  $ret .= '     <button type="submit" class="btn btn-primary" style="padding: 10px 60px;">'.$label_submit.'</button>';
-  $ret .= '   </div>';
-  $ret .= ' </div>';
-  $ret .= '</form>';
-  $ret .= '</div>';
-  return $ret;
-}
-add_shortcode("fix_001940_nnew_old1", "fix_001940_nnew_old1");
-
 
 
 
