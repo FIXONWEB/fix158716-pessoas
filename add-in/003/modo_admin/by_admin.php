@@ -29,7 +29,8 @@ function fix158716_parse_request_by_admin( &$wp ) {
 		if(current_user_can('administrator')) $vai = 1;
 		if(current_user_can('fix-administrativo')) $vai = 1;
 		if(!$vai) {	return '<!--não disponivel-->';}
-		echo do_shortcode('[fix158716_adm_edit]');
+		// echo do_shortcode('[fix158716_adm_edit]');
+		echo do_shortcode('[fix158716_edit_by_admin]');
 		exit;
 	}
 
@@ -95,6 +96,10 @@ function fix158716_nnew_by_admin($atts, $content = null){
 			jQuery(function($){
 				$('#fix158716_nnew').on('submit',function(e){
 					e.preventDefault();
+					$('#fix158716_nnew').css('display','none');
+					$('#fix158716_mnut_btn_nnew_dv').append('<div id="fix158716_msg">SALVANDO...</div>');
+
+
 					var dados = $( this ).serialize();
 					var request = jQuery.ajax({
 					    url: "<?php echo site_url() ?>/fix158716_insert_by_admin/",
@@ -104,21 +109,8 @@ function fix158716_nnew_by_admin($atts, $content = null){
 					});
 					request.always(function(resposta, textStatus) {
 						if (textStatus != "success") {
-							// console.log('fail');
 							alert("Error: " + resposta.statusText); //error is always called .statusText
 						 } else {
-						 	console.log(resposta.statusText);
-						 	// if ($(".fix158716_list")[0]){
-						 	// 	$(".fix158716_list_dv_load").remove();
-						 	// 	$(".fix158716_list_dv").parent().append('<div class="fix158716_list_dv_load"></div>');
-						 	// 	$(".fix158716_list_dv").remove();
-						 	// 	$(".fix158716_list_dv_load").parent().load('<?php echo site_url() ?>/fix158716_list/');
-						 	// }
-						 	// $('#fix158716_mnum_dv').remove();
-						 	// $('#fix158716_mnum_mask').remove();
-
-						 	// $('#fix158716_mnut_btn_nnew_dv').remove();
-						 	// $('#fix158716_mnut_btn_nnew_mask').remove();
 						 	window.location.reload();
 						 }
 					});					
@@ -127,24 +119,16 @@ function fix158716_nnew_by_admin($atts, $content = null){
 			});
 		</script>
 		<?php 
-		//echo do_shortcode('[fix_001940_nnew md=fix158716  target_insert="#" un_show="
-		//	fix158716_codigo 
-		//	fix158716_data 
-		//	fix158716_hora 
-		//	fix158716_id_user 
-		//	"
-		//]');
-		//echo '<pre>';
-		//print_r(fix_001940_get_md_novo('fix158716'));
-		//print_r(fix_001940_get_fields('fix158716'));
-		//echo '</pre>';
 
 		echo do_shortcode('[fix_001940_nnew md=fix158716  target_insert="#" un_show="
 			fix158716_codigo 
 			fix158716_data 
 			fix158716_hora 
 			fix158716_id_user 
-			fix158716__foto 
+			fix158716_foto 
+			fix158716_rede_social 
+			fix158716_funcao 
+			fix158716_departamento 
 			"
 		]');
 
@@ -254,7 +238,16 @@ function fix158716_list_by_admin($atts, $content = null){
 				md=fix158716 
 				col_x0="..." 
 				col_xt="..." 
-				un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_foto " 
+				un_show="
+				fix158716_codigo 
+				fix158716_data 
+				fix158716_hora 
+				fix158716_id_user 
+				fix158716_foto 
+				fix158716_rede_social 
+				fix158716_funcao 
+				fix158716_departamento 
+				" 
 				col__url="fix158716_nome_completo,<a href=../detalhes/?cod=__fix158716_codigo__>__this__</a>"
 			]');
 			?>
@@ -636,18 +629,6 @@ function fix158716_edit_by_admin($atts, $content = null){
 						console.log('fail');
 						alert("Error: " + resposta.statusText); //error is always called .statusText
 					 } else {
-					 	// console.log(resposta.statusText);
-					 	// if ($(".fix158716_list")[0]){
-					 	// 	console.log('tem');
-					 	// 	$(".fix158716_list_dv_load").remove();
-					 	// 	$(".fix158716_list_dv").parent().append('<div class="fix158716_list_dv_load"></div>');
-					 	// 	$(".fix158716_list_dv").remove();
-					 	// 	$(".fix158716_list_dv_load").parent().load('<?php echo site_url() ?>/fix158716_list/');
-					 	// }
-					 	// $('#fix158716_mnum_btn_editar_mask').remove();
-					 	// $('#fix158716_mnum_btn_editar_dv').remove();
-					 	// $('#fix158716_mnum_mask').remove();
-					 	// $('#fix158716_mnum_dv').remove();
 					 	window.location.reload();
 					 }
 				});
@@ -656,10 +637,14 @@ function fix158716_edit_by_admin($atts, $content = null){
 	</script>
 	<?php
 	echo do_shortcode('[fix_001940_edit md=fix158716 cod=__cod__ target_update="#" un_show="
-		fix158716_codigo 
-		fix158716_data 
-		fix158716_hora 
-		fix158716_foto 
+			fix158716_codigo 
+			fix158716_data 
+			fix158716_hora 
+			fix158716_id_user 
+			fix158716_foto 
+			fix158716_rede_social 
+			fix158716_funcao 
+			fix158716_departamento 
 		"
 	]');
 }
@@ -674,13 +659,16 @@ function fix158716_view_by_admin($atts, $content = null){
 	
 	echo do_shortcode('[fix158716_view_foto_by_admin]');
 	echo do_shortcode('[fix158716_form_upload_foto]');
-	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
+	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="
+			fix158716_codigo 
+			fix158716_data 
+			fix158716_hora 
+			fix158716_id_user 
+			fix158716_foto 
+			fix158716_rede_social 
+			fix158716_funcao 
+			fix158716_departamento 
+		"]');
 	
 }
 
-
-// add_shortcode("fix158716_view_by_admin", "fix158716_view_by_admin");
-// function fix158716_view_by_admin($atts, $content = null){
-// 	echo do_shortcode('[fix_001940_view md="fix158716" cod=__cod__ un_show="fix158716_codigo fix158716_data fix158716_hora fix158716_status "]');
-	
-// }

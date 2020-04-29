@@ -13,7 +13,7 @@ Cadastro de pessoas.
 
 == Description ==
 
-Utilize este plugin para instalar um modulo de cadastro de pessoas contendo nome, nascimento, foto, e-mail e endereço onde sua instalação do WorsPress passa a ter um cadastro de pessoas em tabela separada dentro do mesmo banco de dados onde o wordpress foi instalado como se fosse uma aplicação CRUD, isto é, não utiliza CPT e não altera nem utiliza o cadastro de usuário nativo do WP, apenas manipula uma tabela de pessoas criada por ocasião da instalação do plugin.
+Utilize este plugin para instalar um módulo de cadastro de pessoas contendo nome, nascimento, foto, e-mail onde sua instalação do WorsPress passa a ter um cadastro de pessoas em tabela separada dentro do mesmo banco de dados onde o wordpress foi instalado como se fosse uma aplicação CRUD, isto é, não utiliza CPT e não altera nem utiliza o cadastro de usuário nativo do WP, apenas manipula uma tabela de pessoas criada por ocasião da instalação do plugin.
 
 Shortcodes mais comuns utilizados
 
@@ -35,6 +35,10 @@ Utilize o parametro "start" para começar mostrando a partide de um certo numero
 == Screenshots ==
 
 == Changelog ==
+
+= 0.1.77 =
+* Uma correção do botão na barra de navegação mo modo admin
+* Botão salvar no novo registro foi corrigido.
 
 
 == Upgrade Notice ==
